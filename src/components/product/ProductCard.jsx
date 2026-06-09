@@ -33,7 +33,7 @@ const ProductCard = ({ product }) => {
           </Link>
 
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <p className="fw-bold m-0" style={{ color: 'red', fontSize: '15px' }}>
+            <p className="fw-bold m-0" style={{ color: 'red', fontSize: '15px', cursor: 'pointer' }}>
               {new Intl.NumberFormat('vi-VN').format(product.giaBan)}₫
             </p>
             {/* CHỈNH SỬA: Đổi từ product.tenSp sang product.id */}

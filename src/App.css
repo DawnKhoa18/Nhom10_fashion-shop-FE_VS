@@ -523,6 +523,11 @@ body {
     color: #333;
 }
 
+/* Chỉ đổi màu chữ khi di chuột vào (hover) */
+.nav-tabs .nav-link:hover {
+    color: #FFA500 !important;
+}
+
 .nav-tabs .nav-link.active {
     color: #000;
     border-color: black !important;

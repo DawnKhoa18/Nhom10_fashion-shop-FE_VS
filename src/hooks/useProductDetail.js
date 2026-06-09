@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Thêm useNavigate
 import { getProductDetail, getSizesByColor } from '../services/productService';
+import { useCart } from '../context/CartContext'; // Thêm useCart
 
 const useProductDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate(); // Dùng để chuyển trang
+    const { addToCart } = useCart(); // Lấy hàm từ Context toàn cục
+    
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(null);
 
-    // Trạng thái tương tác của người dùng
     const [currentIndex, setCurrentIndex] = useState(0);
     const [qty, setQty] = useState(1);
     const [selectedColor, setSelectedColor] = useState("");
@@ -17,19 +20,20 @@ const useProductDetail = () => {
 
     const trackRef = useRef(null);
     const [offset, setOffset] = useState(0);
-
-    // CHỈ THÊM: Ref và Effect để tự động cuộn thanh ngang ảnh nhỏ theo ảnh lớn đang hiển thị
     const thumbScrollRef = useRef(null);
+
+    // Khởi tạo trạng thái thông báo toast (tự tùy biến không cần cài thư viện)
+    const [toastMessage, setToastMessage] = useState("");
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, [id]);
 
     useEffect(() => {
         if (thumbScrollRef.current) {
             const activeThumb = thumbScrollRef.current.querySelector('.img-thumb.active');
             if (activeThumb) {
-                activeThumb.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'center'
-                });
+                activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
         }
     }, [currentIndex]);
@@ -44,16 +48,15 @@ const useProductDetail = () => {
                 setDynamicSizes(res.listSizeTheoMau || []);
                 setCurrentIndex(0);
                 setQty(1);
-                setOffset(0); 
+                setOffset(0);
                 setLoading(false);
             })
             .catch(err => {
                 console.error("Lỗi khi lấy chi tiết sản phẩm:", err);
                 setLoading(false);
             });
-    }, [id]); 
+    }, [id]);
 
-    // 3. CHỈNH SỬA: Thay thế đổi từ data.coSize sang data.isCoSize cho đúng key JSON từ Spring Boot
     const handleColorClick = (color) => {
         setSelectedColor(color);
         if (data?.isCoSize && data?.product?.id) {
@@ -74,8 +77,7 @@ const useProductDetail = () => {
     const decreaseQty = () => setQty(prev => (prev > 1 ? prev - 1 : 1));
     const increaseQty = () => setQty(prev => prev + 1);
 
-    // 5. CHỈ CHỈNH SỬA: Đổi từ data.images thành data.productImages cho khớp với DTO Java
-    const allImages = data && data.product 
+    const allImages = data && data.product
         ? [data.product.hinhAnh, ...(data.productImages ? data.productImages.map(img => img.imageName) : [])].filter(Boolean)
         : [];
 
@@ -94,37 +96,61 @@ const useProductDetail = () => {
         const totalItems = data.listSPTuongTu.length;
         const visible = window.innerWidth < 576 ? 1 : window.innerWidth < 768 ? 2 : window.innerWidth < 992 ? 3 : window.innerWidth < 1200 ? 4 : 5;
         const maxOffset = Math.max(totalItems - visible, 0);
-        
+
         let newOffset = offset + direction;
         if (newOffset < 0) newOffset = 0;
         if (newOffset > maxOffset) newOffset = maxOffset;
         setOffset(newOffset);
     };
 
+    // ================= CHỈ THÊM CÁC HÀM XỬ LÝ CLICK CLICK DƯỚI ĐÂY =================
+    
+    // Logic khi bấm "THÊM GIỎ HÀNG"
+    const handleAddToCart = async () => {
+        if (!selectedColor) {
+            showToast("Vui lòng chọn màu sắc!");
+            return;
+        }
+        if (data?.isCoSize && !selectedSize) {
+            showToast("Vui lòng chọn kích thước!");
+            return;
+        }
+
+        const success = await addToCart(data.product.id, selectedColor, selectedSize, qty);
+        if (success) {
+            showToast("🎉 Sản phẩm đã được thêm vào giỏ hàng thành công!");
+        } else {
+            showToast("❌ Có lỗi xảy ra, vui lòng thử lại!");
+        }
+    };
+
+    // Logic khi bấm "MUA NGAY"
+    const handleBuyNow = async () => {
+        if (!selectedColor || (data?.isCoSize && !selectedSize)) {
+            showToast("Vui lòng chọn đầy đủ màu sắc & kích thước!");
+            return;
+        }
+        const success = await addToCart(data.product.id, selectedColor, selectedSize, qty);
+        if (success) {
+            navigate('/checkout'); // Chuyển thẳng sang trang thanh toán luôn
+        }
+    };
+
+    // Hàm tạo hiệu ứng Toast tự chế biến bằng Bootstrap nhanh gọn
+    const showToast = (msg) => {
+        setToastMessage(msg);
+        setTimeout(() => {
+            setToastMessage("");
+        }, 3000); // 3 giây tự tắt
+    };
+
     return {
-        id, 
-        loading,
-        data,
-        currentIndex,
-        setCurrentIndex,
-        qty,
-        selectedColor,
-        selectedSize,
-        setSelectedSize,
-        dynamicSizes,
-        activeTab,
-        setActiveTab,
-        trackRef,
-        offset,
-        allImages,
-        handleColorClick,
-        handleQtyChange,
-        decreaseQty,
-        increaseQty,
-        prevImage,
-        nextImage,
-        slideRelated,
-        thumbScrollRef // CHỈ THÊM: Trả ref ra ngoài giao diện sử dụng
+        id, loading, data, currentIndex, setCurrentIndex, qty,
+        selectedColor, selectedSize, setSelectedSize, dynamicSizes,
+        activeTab, setActiveTab, trackRef, offset, allImages,
+        handleColorClick, handleQtyChange, decreaseQty, increaseQty,
+        prevImage, nextImage, slideRelated, thumbScrollRef,
+        handleAddToCart, handleBuyNow, toastMessage // Xuất thêm 3 biến mới ra ngoài giao diện
     };
 };
 

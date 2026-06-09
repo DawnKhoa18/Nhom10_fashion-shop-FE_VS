@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCategories } from '../../hooks/useCategories';
+import { useCart } from '../../context/CartContext'; // <-- CHỈ THÊM DÒNG NÀY
 
 const MainLayout = ({ children, session, menuData }) => {
   // menuData sẽ là mảng danh mục truyền từ API hoặc file dữ liệu vào
   const [isNavOpen, setIsNavOpen] = useState(false);
   const { categories, parentCats, loading } = useCategories();
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
+  const { cartCount } = useCart(); // <-- CHỈ THÊM DÒNG NÀY
+  console.log("Số lượng giỏ hàng hiện tại trong Context là:", cartCount);
 
   return (
     <div className="main-layout">
@@ -45,8 +48,9 @@ const MainLayout = ({ children, session, menuData }) => {
               <Link to="/gio-hang" className="text-white mx-3 text-center text-decoration-none link-light hover-scale hover-lift">
                 <div className="position-relative d-inline-block">
                   <i className="bi bi-cart3 fs-4"></i>
+                  {/* THAY SỐ 0 BẰNG BIẾN CARTCOUNT Ở DÒNG DƯỚI */}
                   <span className="badge rounded-pill bg-danger cart-badge-custom badge-bounce">
-                    0
+                    {cartCount}
                   </span>
                 </div>
                 <div className="d-none d-lg-block">Giỏ hàng</div>
