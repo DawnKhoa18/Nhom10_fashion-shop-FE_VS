@@ -1,10 +1,11 @@
-body {
-    font-family: 'Inter', sans-serif;
+.admin-shell {
+    min-height: 100vh;
     background-color: #f5f5f5;
+    font-family: 'Inter', sans-serif;
 }
 
-.sidebar {
-    position: fixed; 
+.admin-sidebar {
+    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
@@ -18,22 +19,22 @@ body {
     z-index: 1000;
 }
 
-.sidebar:hover {
+.admin-sidebar:hover {
     width: 250px;
 }
 
-.sidebar .logo,
-.sidebar .nav-link span {
+.admin-sidebar .admin-logo,
+.admin-sidebar .nav-link span {
     opacity: 0;
     transition: opacity 0.3s;
 }
 
-.sidebar:hover .logo,
-.sidebar:hover .nav-link span {
+.admin-sidebar:hover .admin-logo,
+.admin-sidebar:hover .nav-link span {
     opacity: 1;
 }
 
-.sidebar .nav-link {
+.admin-sidebar .nav-link {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -42,43 +43,43 @@ body {
     color: white;
 }
 
-.sidebar .nav-link i {
+.admin-sidebar .nav-link i {
+    width: 24px;
+    min-width: 24px;
     font-size: 1.2rem;
+    text-align: center;
 }
 
-.sidebar .mt-auto {
-    margin-top: auto;
-}
-
-.sidebar .nav-link:hover {
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
     color: #FFA500 !important;
     background-color: rgba(255, 165, 0, 0.15);
     border-radius: 6px;
 }
 
-.sidebar .nav-link:hover i {
+.admin-sidebar .nav-link:hover i,
+.admin-sidebar .nav-link.active i {
     color: #FFA500 !important;
 }
 
-/* Main content cách sidebar */
-.flex-grow-1 {
-    margin-left: 60px; 
+.admin-main {
+    min-height: 100vh;
+    margin-left: 60px;
     transition: margin-left 0.3s;
     padding: 1rem;
 }
 
-.sidebar:hover ~ .flex-grow-1 {
+.admin-sidebar:hover ~ .admin-main {
     margin-left: 250px;
 }
 
-/* Main content */
 .admin-home {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 100vh; 
+    min-height: calc(100vh - 2rem);
 }
 
 .admin-title {
@@ -89,6 +90,7 @@ body {
 }
 
 .admin-welcome {
+    max-width: 760px;
     font-size: 20px;
     background: linear-gradient(90deg, #ffae00, #ff7300);
     padding: 12px 30px;
@@ -97,3 +99,110 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+.admin-products-table {
+    background-color: white;
+}
+
+.admin-orders-table {
+    background-color: white;
+}
+
+.admin-products-table th,
+.admin-products-table td,
+.admin-orders-table th,
+.admin-orders-table td {
+    vertical-align: middle;
+}
+
+.admin-product-img {
+    max-height: 80px;
+    object-fit: cover;
+}
+
+.admin-product-form-card {
+    border: 0;
+}
+
+.admin-shell .pagination .page-link {
+    color: #111;
+}
+
+.admin-shell .pagination .active .page-link {
+    background-color: #111;
+    border-color: #111;
+    color: white;
+}
+
+.admin-chart-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-revenue-chart {
+    min-width: 620px;
+    height: 300px;
+}
+
+.admin-chart-label {
+    font-size: 14px;
+    fill: #6c757d;
+}
+
+.admin-empty-chart {
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    text-align: center;
+}
+
+.admin-status-chart {
+    width: 100%;
+    max-width: 280px;
+}
+
+.admin-status-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+}
+
+.admin-stat-table {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .admin-sidebar,
+    .admin-sidebar:hover {
+        width: 250px;
+        transform: translateX(-190px);
+    }
+
+    .admin-sidebar:hover {
+        transform: translateX(0);
+    }
+
+    .admin-main,
+    .admin-sidebar:hover ~ .admin-main {
+        margin-left: 60px;
+    }
+
+    .admin-title {
+        font-size: 36px;
+    }
+
+    .admin-welcome {
+        font-size: 18px;
+    }
+}
