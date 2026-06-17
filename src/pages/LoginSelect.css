@@ -1,0 +1,106 @@
+.login-select-container {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8f9fa,
+            #dee2e6
+        );
+}
+
+.login-select-card {
+
+    width: 500px;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.15);
+}
+
+.login-select-card h1 {
+
+    text-align: center;
+
+    margin-bottom: 10px;
+}
+
+.login-select-card p {
+
+    text-align: center;
+
+    color: gray;
+
+    margin-bottom: 30px;
+}
+
+.account-section {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.account-section h3 {
+
+    margin-bottom: 10px;
+}
+
+.customer-login,
+.customer-register,
+.admin-login {
+
+    border: none;
+
+    padding: 14px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.customer-login {
+
+    background: #0d6efd;
+
+    color: white;
+}
+
+.customer-register {
+
+    background: #198754;
+
+    color: white;
+}
+
+.admin-login {
+
+    background: #212529;
+
+    color: white;
+}
+
+.divider {
+
+    height: 1px;
+
+    background: #ddd;
+
+    margin: 25px 0;
+}

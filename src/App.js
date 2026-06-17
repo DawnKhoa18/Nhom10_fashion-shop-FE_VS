@@ -15,13 +15,21 @@ import AdminOrderUpdate from './pages/AdminOrderUpdate';
 import AdminStatistics from './pages/AdminStatistics';
 import './App.css';
 import './Admin.css';
-import OrderSuccessPage from './pages/OrderSuccessPage';
+import LoginSelect from "./pages/LoginSelect";
+import CustomerLogin from "./pages/CustomerLogin";
+import Register from "./pages/Register";
+import AdminLogin from "./pages/AdminLogin";
+
 function AppRoutes() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   const routes = (
     <Routes>
+      <Route path="/login" element={<LoginSelect  />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login/customer" element={<CustomerLogin  />} />
+      <Route path="/login/admin" element={<AdminLogin  />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/tat-ca" element={<ProductList defaultSlug="tat-ca" />} />
       <Route path="/hang-moi" element={<ProductList defaultSlug="hang-moi" />} />
@@ -29,8 +37,6 @@ function AppRoutes() {
       <Route path="/danh-muc/:slug" element={<ProductList />} />
       <Route path="/san-pham/:id" element={<ProductDetail />} />
       <Route path="/checkout" element={<CheckoutPage />} />
-      <Route path="/checkout/success" element={<OrderSuccessPage />} />
-      <Route path="/gio-hang" element={<CheckoutPage />} />
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/admin/san-pham" element={<AdminProducts />} />
       <Route path="/admin/san-pham/them" element={<AdminProductForm mode="create" />} />
