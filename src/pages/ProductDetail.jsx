@@ -104,7 +104,7 @@ const ProductDetail = () => {
                             <button className="image-nav-btn image-nav-left" onClick={prevImage}>
                                 <i className="bi bi-chevron-left"></i>
                             </button>
-                            <img src={`http://localhost:8080/images/Products/${allImages[currentIndex]}`} className="img-fluid w-100 rounded-4" alt="Main" style={{ transition: 'opacity 0.2s' }} />
+                            <img src={`http://localhost:8080/Images/Products/${allImages[currentIndex]}`} className="img-fluid w-100 rounded-4" alt="Main" style={{ transition: 'opacity 0.2s' }} />
                             <button className="image-nav-btn image-nav-right" onClick={nextImage}>
                                 <i className="bi bi-chevron-right"></i>
                             </button>
@@ -118,7 +118,7 @@ const ProductDetail = () => {
                             {allImages.map((img, idx) => (
                                 <img
                                     key={idx}
-                                    src={`http://localhost:8080/images/Products/${img}`}
+                                    src={`http://localhost:8080/Images/Products/${img}`}
                                     className={`img-thumbnail rounded-3 img-thumb ${idx === currentIndex ? 'active' : ''}`}
                                     style={{ width: '95px', height: '95px', cursor: 'pointer', objectFit: 'cover', flexShrink: 0 }}
                                     onClick={() => setCurrentIndex(idx)}
@@ -188,8 +188,8 @@ const ProductDetail = () => {
 
             <div className="tab-content p-4 border border-top-0 rounded-bottom shadow-sm" style={{ overflowY: 'visible', overflowX: 'visible', height: 'auto', maxHeight: 'none' }}>
                 {activeTab === "desc" && <div dangerouslySetInnerHTML={{ __html: product.description }} style={{ lineHeight: '1.6' }} />}
-                {activeTab === "ship" && <img src={`http://localhost:8080/images/ChinhSach_GiaoHang_DoiHang/chinh-sach-giao-hang.jpg`} className="img-fluid rounded w-100" alt="Shipping" style={{ display: 'block', height: 'auto' }} />}
-                {activeTab === "return" && <img src={`http://localhost:8080/images/ChinhSach_GiaoHang_DoiHang/chinh-sach-doi-hang.jpg`} className="img-fluid rounded w-100" alt="Return" style={{ display: 'block', height: 'auto' }} />}
+                {activeTab === "ship" && <img src={`http://localhost:8080/Images/ChinhSach_GiaoHang_DoiHang/chinh-sach-giao-hang.jpg`} className="img-fluid rounded w-100" alt="Shipping" style={{ display: 'block', height: 'auto' }} />}
+                {activeTab === "return" && <img src={`http://localhost:8080/Images/ChinhSach_GiaoHang_DoiHang/chinh-sach-doi-hang.jpg`} className="img-fluid rounded w-100" alt="Return" style={{ display: 'block', height: 'auto' }} />}
             </div>
 
             <div className="d-flex align-items-center justify-content-center my-4 new-title">
