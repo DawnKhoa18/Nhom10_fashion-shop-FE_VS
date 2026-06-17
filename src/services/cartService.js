@@ -4,17 +4,22 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8080/api/carts'; 
 
 export const getCartData = async () => {
-    const response = await axios.get(`${API_URL}`);
+    const response = await axios.get("http://localhost:8080/api/cart-items/cart/1");
     return response.data;
 };
 
-export const updateCartQty = async (maSP, mau, size, soLuong) => {
-    const response = await axios.post(`${API_URL}/update-qty`, { maSP, mau, size, soLuong });
+export const updateCartQty = async (id, quantity) => {
+    const response = await axios.post(`${API_URL}/update-qty`, {
+        id,
+        quantity
+    });
     return response.data;
 };
 
-export const removeFromCartApi = async (maSP, mau, size) => {
-    const response = await axios.post(`${API_URL}/remove`, { maSP, mau, size });
+export const removeFromCartApi = async (id) => {
+    const response = await axios.post(`${API_URL}/remove`, {
+        id
+    });
     return response.data;
 };
 
