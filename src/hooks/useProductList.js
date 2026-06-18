@@ -14,6 +14,7 @@ const useProductList = (defaultSlug) => {
   const [hienXemThem, setHienXemThem] = useState(false);
 
   const currentSort = searchParams.get('sort') || 'default';
+  const keyword = searchParams.get('keyword') || '';
   
   // 2. Cập nhật activeSlug dựa trên slug lấy từ useParams()
   const activeSlug = slug || defaultSlug || 'tat-ca';
@@ -25,7 +26,7 @@ const useProductList = (defaultSlug) => {
       top: 0,
       behavior: 'smooth' // Cuộn mượt lên đầu trang
     });
-  }, [activeSlug, currentSort]); 
+  }, [activeSlug, currentSort, keyword]); 
   // ----------------------------------------------
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const useProductList = (defaultSlug) => {
       params: {
         slug: activeSlug,
         sort: currentSort,
+        keyword: keyword,
         take: take
       }
     })
@@ -43,15 +45,17 @@ const useProductList = (defaultSlug) => {
       setHienXemThem(res.data.hienXemThem); 
     })
     .catch(err => console.error("Lỗi lấy danh sách sản phẩm: ", err));
-  }, [activeSlug, currentSort, take]);
+  }, [activeSlug, currentSort, keyword, take]);
 
   // 3. Reset số lượng sản phẩm hiển thị khi chuyển danh mục
   useEffect(() => {
     setTake(30);
-  }, [slug, defaultSlug]);
+  }, [slug, defaultSlug, keyword]);
 
   const handleSortChange = (e) => {
-    setSearchParams({ sort: e.target.value });
+    const nextParams = { sort: e.target.value };
+    if (keyword) nextParams.keyword = keyword;
+    setSearchParams(nextParams);
   };
 
   const handleLoadMore = () => {
@@ -61,6 +65,7 @@ const useProductList = (defaultSlug) => {
   return {
     products,
     pageTitle,
+    keyword,
     banner,
     currentSort,
     hienXemThem,
