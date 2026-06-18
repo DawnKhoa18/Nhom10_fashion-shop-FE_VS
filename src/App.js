@@ -7,6 +7,10 @@ import HomePage from './pages/HomePage';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import CheckoutPage from './pages/CheckoutPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
+import MyOrders from './pages/MyOrders';
+import CustomerOrderDetail from './pages/CustomerOrderDetail';
+import AccountPage from './pages/AccountPage';
 import AdminHome from './pages/AdminHome';
 import AdminProducts from './pages/AdminProducts';
 import AdminProductForm from './pages/AdminProductForm';
@@ -15,10 +19,8 @@ import AdminOrderUpdate from './pages/AdminOrderUpdate';
 import AdminStatistics from './pages/AdminStatistics';
 import './App.css';
 import './Admin.css';
-import LoginSelect from "./pages/LoginSelect";
 import CustomerLogin from "./pages/CustomerLogin";
 import Register from "./pages/Register";
-import AdminLogin from "./pages/AdminLogin";
 
 function AppRoutes() {
   const location = useLocation();
@@ -26,10 +28,10 @@ function AppRoutes() {
 
   const routes = (
     <Routes>
-      <Route path="/login" element={<LoginSelect  />} />
+      <Route path="/login" element={<CustomerLogin />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/login/customer" element={<CustomerLogin  />} />
-      <Route path="/login/admin" element={<AdminLogin  />} />
+      <Route path="/login/customer" element={<CustomerLogin />} />
+      <Route path="/login/admin" element={<CustomerLogin />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/tat-ca" element={<ProductList defaultSlug="tat-ca" />} />
       <Route path="/hang-moi" element={<ProductList defaultSlug="hang-moi" />} />
@@ -37,6 +39,10 @@ function AppRoutes() {
       <Route path="/danh-muc/:slug" element={<ProductList />} />
       <Route path="/san-pham/:id" element={<ProductDetail />} />
       <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/checkout/success" element={<OrderSuccessPage />} />
+      <Route path="/don-hang-cua-toi" element={<MyOrders />} />
+      <Route path="/don-hang-cua-toi/:id" element={<CustomerOrderDetail />} />
+      <Route path="/tai-khoan" element={<AccountPage />} />
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/admin/san-pham" element={<AdminProducts />} />
       <Route path="/admin/san-pham/them" element={<AdminProductForm mode="create" />} />
@@ -44,6 +50,7 @@ function AppRoutes() {
       <Route path="/admin/don-hang" element={<AdminOrders />} />
       <Route path="/admin/don-hang/cap-nhat/:id" element={<AdminOrderUpdate />} />
       <Route path="/admin/thong-ke" element={<AdminStatistics />} />
+      <Route path="/gio-hang" element={<CheckoutPage />} />
     </Routes>
   );
 

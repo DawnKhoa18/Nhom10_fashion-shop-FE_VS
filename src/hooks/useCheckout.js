@@ -4,10 +4,11 @@ import { getCartData, updateCartQty, removeFromCartApi, submitOrder } from '../s
 
 const useCheckout = () => {
     const navigate = useNavigate();
+
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [errors, setErrors] = useState({});
 
-    // Form trạng thái người dùng nhập
     const [formData, setFormData] = useState({
         tenKH: '',
         phone: '',
@@ -16,112 +17,205 @@ const useCheckout = () => {
         hinhThucThanhToan: 'COD'
     });
 
-    // Lấy dữ liệu giỏ hàng ban đầu khi vào trang
+    const validateField = (name, rawValue) => {
+        const value = rawValue.trim();
+
+        if (name === 'tenKH') {
+            if (!value) return "Vui lòng nhập họ tên";
+            if (value.length < 2) return "Họ tên phải có ít nhất 2 ký tự";
+            if (!/^[\p{L}]+(?:[\s'.-][\p{L}]+)*$/u.test(value)) {
+                return "Họ tên chỉ được chứa chữ cái";
+            }
+        }
+
+        if (name === 'phone') {
+            if (!value) return "Vui lòng nhập số điện thoại";
+            if (!/^0[0-9]{9,10}$/.test(value)) {
+                return "Số điện thoại phải bắt đầu bằng 0 và có 10-11 số";
+            }
+        }
+
+        if (name === 'diaChi') {
+            if (!value) return "Vui lòng nhập địa chỉ giao hàng";
+            if (value.length < 10 || !/[\p{L}]/u.test(value)) {
+                return "Địa chỉ phải có chữ và ít nhất 10 ký tự";
+            }
+        }
+
+        return '';
+    };
+
     useEffect(() => {
         loadCart();
     }, []);
 
     const loadCart = () => {
         setLoading(true);
+
         getCartData()
             .then(res => {
+                console.log("Dữ liệu giỏ hàng lấy được:", res);
                 setCartItems(res || []);
                 setLoading(false);
             })
             .catch(err => {
                 console.error("Lỗi khi tải giỏ hàng:", err);
+                setCartItems([]);
                 setLoading(false);
             });
     };
 
-    // Thay đổi input text/radio
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        setErrors(prev => ({
+            ...prev,
+            [name]: prev[name] ? validateField(name, value) : ''
+        }));
     };
 
-    // Kiểm tra xử lý số điện thoại chỉ nhận số
     const handlePhoneChange = (e) => {
         const value = e.target.value.replace(/[^0-9]/g, '');
+
         if (value.length <= 11) {
-            setFormData(prev => ({ ...prev, phone: value }));
+            setFormData(prev => ({
+                ...prev,
+                phone: value
+            }));
+
+            setErrors(prev => ({
+                ...prev,
+                phone: prev.phone ? validateField('phone', value) : ''
+            }));
         }
     };
 
-    // Thay đổi số lượng (nút cộng / trừ)
+    const findCartItem = (maSP, mau, size) => {
+        return cartItems.find(
+            x => x.maSP === maSP && x.mauSac === mau && x.size === size
+        );
+    };
+
     const handleQtyChange = (maSP, mau, size, change) => {
-        const item = cartItems.find(x => x.maSP === maSP && x.mauSac === mau && x.size === size);
+        const item = findCartItem(maSP, mau, size);
         if (!item) return;
 
-        let newQty = item.soLuong + change;
+        let newQty = Number(item.soLuong) + change;
         if (newQty < 1) newQty = 1;
 
-        updateCartQty(maSP, mau, size, newQty)
-            .then(res => {
-                if (res.success) {
-                    setCartItems(prev => prev.map(x => 
-                        (x.maSP === maSP && x.mauSac === mau && x.size === size) 
-                        ? { ...x, soLuong: newQty, thanhTien: res.thanhTien } 
-                        : x
-                    ));
-                }
+        updateCartQty(item.id, newQty)
+            .then(() => {
+                setCartItems(prev =>
+                    prev.map(x =>
+                        x.id === item.id
+                            ? {
+                                ...x,
+                                soLuong: newQty,
+                                thanhTien: Number(x.donGia) * newQty
+                            }
+                            : x
+                    )
+                );
             })
             .catch(err => console.error("Lỗi cập nhật số lượng:", err));
     };
 
-    // Thay đổi số lượng trực tiếp qua ô input nhập số
     const handleQtyDirectChange = (maSP, mau, size, value) => {
+        const item = findCartItem(maSP, mau, size);
+        if (!item) return;
+
         let val = parseInt(value.replace(/\D/g, ""));
         if (isNaN(val) || val < 1) val = 1;
 
-        updateCartQty(maSP, mau, size, val)
-            .then(res => {
-                if (res.success) {
-                    setCartItems(prev => prev.map(x => 
-                        (x.maSP === maSP && x.mauSac === mau && x.size === size) 
-                        ? { ...x, soLuong: val, thanhTien: res.thanhTien } 
-                        : x
-                    ));
-                }
+        updateCartQty(item.id, val)
+            .then(() => {
+                setCartItems(prev =>
+                    prev.map(x =>
+                        x.id === item.id
+                            ? {
+                                ...x,
+                                soLuong: val,
+                                thanhTien: Number(x.donGia) * val
+                            }
+                            : x
+                    )
+                );
             })
             .catch(err => console.error("Lỗi cập nhật trực tiếp số lượng:", err));
     };
 
-    // Xóa sản phẩm khỏi giỏ hàng
     const handleRemoveItem = (maSP, mau, size) => {
         if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) return;
 
-        removeFromCartApi(maSP, mau, size)
-            .then(res => {
-                if (res.success) {
-                    setCartItems(prev => prev.filter(x => !(x.maSP === maSP && x.mauSac === mau && x.size === size)));
-                }
+        const item = findCartItem(maSP, mau, size);
+        if (!item) return;
+
+        removeFromCartApi(item.id)
+            .then(() => {
+                setCartItems(prev => prev.filter(x => x.id !== item.id));
             })
             .catch(err => console.error("Lỗi khi xóa sản phẩm:", err));
     };
 
-    // Tính tổng tiền giỏ hàng
-    const totalPrice = cartItems.reduce((sum, item) => sum + (item.thanhTien || (item.donGia * item.soLuong)), 0);
+    const totalPrice = cartItems.reduce(
+        (sum, item) => sum + (Number(item.thanhTien) || (Number(item.donGia) * Number(item.soLuong))),
+        0
+    );
 
-    // Xử lý gửi đơn hàng (Submit Form)
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Đã chạy handleSubmit");
+        console.log("customerId:", localStorage.getItem("customerId"));
+        console.log("cartItems:", cartItems);
+
+
+        const tenKH = formData.tenKH.trim();
+        const phone = formData.phone.trim();
+        const diaChi = formData.diaChi.trim();
+
+        const newErrors = {
+            tenKH: validateField('tenKH', tenKH),
+            phone: validateField('phone', phone),
+            diaChi: validateField('diaChi', diaChi)
+        };
+
         if (cartItems.length === 0) {
             alert("Giỏ hàng của bạn đang trống!");
             return;
         }
 
+        if (Object.values(newErrors).some(Boolean)) {
+            console.log("Lỗi validate:", newErrors);
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({});
+
         const orderData = {
             ...formData,
+            customerId: localStorage.getItem("customerId"),
+            tenKH,
+            phone,
+            diaChi,
             tongTien: totalPrice,
             items: cartItems
         };
 
+        console.log("Dữ liệu gửi đặt hàng:", orderData);
+
         submitOrder(orderData)
             .then(res => {
                 if (res.success) {
-                    // Chuyển hướng sang trang hoàn tất đơn hàng
-                    navigate('/checkout/success'); 
+                    navigate('/checkout/success', {
+                        replace: true,
+                        state: { orderNumber: res.orderNumber }
+                    });
                 } else {
                     alert(res.message || "Đặt hàng thất bại!");
                 }
@@ -136,6 +230,7 @@ const useCheckout = () => {
         cartItems,
         loading,
         formData,
+        errors,
         totalPrice,
         handleInputChange,
         handlePhoneChange,

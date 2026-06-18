@@ -1,29 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCategories } from '../../hooks/useCategories';
-import { useCart } from '../../context/CartContext'; // <-- CHỈ THÊM DÒNG NÀY
+import { useCart } from '../../context/CartContext';
 
 const MainLayout = ({ children, session, menuData }) => {
-  // menuData sẽ là mảng danh mục truyền từ API hoặc file dữ liệu vào
   const [isNavOpen, setIsNavOpen] = useState(false);
   const { categories, parentCats, loading } = useCategories();
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
-  const { cartCount } = useCart(); // <-- CHỈ THÊM DÒNG NÀY
-  console.log("Số lượng giỏ hàng hiện tại trong Context là:", cartCount);
+  const { cartCount } = useCart();
+
+  const [fullName, setFullName] = useState(localStorage.getItem("fullName"));
+  const role = localStorage.getItem("role");
+
+  useEffect(() => {
+    const updateProfileName = () => setFullName(localStorage.getItem("fullName"));
+    window.addEventListener('profileUpdated', updateProfileName);
+    return () => window.removeEventListener('profileUpdated', updateProfileName);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("customerId");
+    localStorage.removeItem("fullName");
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
+    localStorage.removeItem("accountType");
+    window.location.href = "/login";
+  };
 
   return (
     <div className="main-layout">
-      {/* HEADER & NAV WRAPPER */}
       <div className="sticky-top" style={{ zIndex: 1050 }}>
-        {/* Header Đen */}
         <header className="bg-black py-2">
           <div className="container d-flex align-items-center justify-content-between">
-            {/* Logo */}
             <Link to="/" onClick={() => window.scrollTo(0, 0)} className="d-flex align-items-center mx-2">
               <img src="/images/logoShopQuanAo.jpg" alt="logo" style={{ height: '60px', cursor: 'pointer' }} />
             </Link>
 
-            {/* Thanh tìm kiếm */}
             <form className="header-search d-none d-lg-flex flex-grow-1 mx-4" style={{ maxWidth: '600px' }}>
               <div className="input-group">
                 <input type="text" className="form-control" placeholder="Bạn đang tìm gì..." />
@@ -33,22 +45,44 @@ const MainLayout = ({ children, session, menuData }) => {
               </div>
             </form>
 
-            {/* Icon Tiện ích */}
             <div className="d-flex align-items-center text-white">
               <Link to="/cua-hang" className="text-white mx-2 mx-lg-3 text-center text-decoration-none link-light hover-scale hover-lift">
                 <i className="bi bi-shop fs-4"></i>
                 <div className="d-none d-lg-block">Cửa hàng</div>
               </Link>
 
-              <Link to="/Login" className="text-white mx-2 mx-lg-3 text-center text-decoration-none link-light hover-scale hover-lift">
-                <i className="bi bi-person fs-4"></i>
-                <div className="d-none d-lg-block">Đăng nhập</div>
-              </Link>
+              {fullName ? (
+                <div className="text-white mx-2 mx-lg-3 text-center">
+                  <Link to="/tai-khoan" className="text-white text-decoration-none d-block">
+                    <i className="bi bi-person-circle fs-4"></i>
+                    <div className="d-none d-lg-block" style={{ fontSize: '14px' }}>
+                      {fullName}
+                    </div>
+                  </Link>
+                  <small style={{ color: "#ffc107", fontSize: "12px" }}>
+                    {role}
+                  </small>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="btn btn-sm btn-outline-light mt-1"
+                      style={{ fontSize: "11px", padding: "2px 6px" }}
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Link to="/login" className="text-white mx-2 mx-lg-3 text-center text-decoration-none link-light hover-scale hover-lift">
+                  <i className="bi bi-person fs-4"></i>
+                  <div className="d-none d-lg-block">Đăng nhập</div>
+                </Link>
+              )}
 
               <Link to="/gio-hang" className="text-white mx-3 text-center text-decoration-none link-light hover-scale hover-lift">
                 <div className="position-relative d-inline-block">
                   <i className="bi bi-cart3 fs-4"></i>
-                  {/* THAY SỐ 0 BẰNG BIẾN CARTCOUNT Ở DÒNG DƯỚI */}
                   <span className="badge rounded-pill bg-danger cart-badge-custom badge-bounce">
                     {cartCount}
                   </span>
@@ -59,7 +93,6 @@ const MainLayout = ({ children, session, menuData }) => {
           </div>
         </header>
 
-        {/* Menu Danh mục (Navbar Trắng) */}
         <nav className="navbar navbar-expand-lg bg-white shadow-sm py-0">
           <div className="container">
             <button className="navbar-toggler" type="button" onClick={() => setIsNavOpen(!isNavOpen)}>
@@ -68,15 +101,12 @@ const MainLayout = ({ children, session, menuData }) => {
 
             <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="mainNavbar">
               <ul className="navbar-nav mx-auto text-uppercase fw-bold" style={{ gap: '1.8rem' }}>
-
-                {/* 1. HÀNG MỚI */}
                 <li className="nav-item">
                   <Link className="nav-link text-danger py-3" to="/hang-moi">
                     HÀNG MỚI<span className="badge bg-danger ms-1" style={{ fontSize: '10px' }}>NEW</span>
                   </Link>
                 </li>
 
-                {/* 2. SẢN PHẨM (Menu bay ngang) */}
                 <li className="nav-item dropdown">
                   <Link className="nav-link text-dark py-3" to="/tat-ca">
                     SẢN PHẨM <i className="bi bi-caret-down-fill ms-1"></i>
@@ -89,7 +119,6 @@ const MainLayout = ({ children, session, menuData }) => {
                       </Link>
                     </li>
 
-                    {/* Danh mục cha từ Database - Chuyển sang dùng SLUG */}
                     {!loading && parentCats.map((dm) => {
                       const children = categories.filter(c => c.parentId === dm.id);
 
@@ -100,7 +129,6 @@ const MainLayout = ({ children, session, menuData }) => {
                               {dm.name}
                               <i className="bi bi-chevron-right small"></i>
                             </Link>
-                            {/* Menu con - Chuyển sang dùng SLUG */}
                             <ul className="dropdown-menu border-0 shadow-lg">
                               {children.map(child => (
                                 <li key={child.id}>
@@ -113,6 +141,7 @@ const MainLayout = ({ children, session, menuData }) => {
                           </li>
                         );
                       }
+
                       return (
                         <li key={dm.id}>
                           <Link className="dropdown-item py-3" to={`/danh-muc/${dm.slug}`}>{dm.name}</Link>
@@ -122,61 +151,66 @@ const MainLayout = ({ children, session, menuData }) => {
                   </ul>
                 </li>
 
-                {/* 3. ÁO NAM (Lọc theo tên, lấy SLUG) */}
                 <li className="nav-item dropdown">
-                  <Link className="nav-link text-dark py-3" to={`/danh-muc/${categories.find(c => c.parentId === null && c.name.toLowerCase().includes("áo"))?.slug || ''}`}>ÁO NAM <i className="bi bi-caret-down-fill ms-1"></i></Link>
+                  <Link className="nav-link text-dark py-3" to={`/danh-muc/${categories.find(c => c.parentId === null && c.name.toLowerCase().includes("áo"))?.slug || ''}`}>
+                    ÁO NAM <i className="bi bi-caret-down-fill ms-1"></i>
+                  </Link>
                   <ul className="dropdown-menu border-0 shadow-lg">
                     {!loading && categories
                       .filter(c => categories.find(p => p.id === c.parentId)?.name.toLowerCase().includes("áo"))
                       .map(sub => (
-                        <li key={sub.id}><Link className="dropdown-item py-3" to={`/danh-muc/${sub.slug}`}>{sub.name}</Link></li>
+                        <li key={sub.id}>
+                          <Link className="dropdown-item py-3" to={`/danh-muc/${sub.slug}`}>{sub.name}</Link>
+                        </li>
                       ))
                     }
                   </ul>
                 </li>
 
-                {/* 4. QUẦN NAM (Lọc theo tên, lấy SLUG) */}
                 <li className="nav-item dropdown">
-                  <Link className="nav-link text-dark py-3" to={`/danh-muc/${categories.find(c => c.parentId === null && c.name.toLowerCase().includes("quần"))?.slug || ''}`}>QUẦN NAM <i className="bi bi-caret-down-fill ms-1"></i></Link>
+                  <Link className="nav-link text-dark py-3" to={`/danh-muc/${categories.find(c => c.parentId === null && c.name.toLowerCase().includes("quần"))?.slug || ''}`}>
+                    QUẦN NAM <i className="bi bi-caret-down-fill ms-1"></i>
+                  </Link>
                   <ul className="dropdown-menu border-0 shadow-lg">
                     {!loading && categories
                       .filter(c => categories.find(p => p.id === c.parentId)?.name.toLowerCase().includes("quần"))
                       .map(sub => (
-                        <li key={sub.id}><Link className="dropdown-item py-3" to={`/danh-muc/${sub.slug}`}>{sub.name}</Link></li>
+                        <li key={sub.id}>
+                          <Link className="dropdown-item py-3" to={`/danh-muc/${sub.slug}`}>{sub.name}</Link>
+                        </li>
                       ))
                     }
                   </ul>
                 </li>
 
-                {/* 5. PHỤ KIỆN (Lọc theo tên, lấy SLUG) */}
                 <li className="nav-item dropdown">
-                  <Link className="nav-link text-dark py-3" to={`/danh-muc/${categories.find(c => c.parentId === null && c.name.toLowerCase().includes("phụ kiện"))?.slug || ''}`}>PHỤ KIỆN <i className="bi bi-caret-down-fill ms-1"></i></Link>
+                  <Link className="nav-link text-dark py-3" to={`/danh-muc/${categories.find(c => c.parentId === null && c.name.toLowerCase().includes("phụ kiện"))?.slug || ''}`}>
+                    PHỤ KIỆN <i className="bi bi-caret-down-fill ms-1"></i>
+                  </Link>
                   <ul className="dropdown-menu border-0 shadow-lg">
                     {!loading && categories
                       .filter(c => categories.find(p => p.id === c.parentId)?.name.toLowerCase().includes("phụ kiện"))
                       .map(sub => (
-                        <li key={sub.id}><Link className="dropdown-item py-3" to={`/danh-muc/${sub.slug}`}>{sub.name}</Link></li>
+                        <li key={sub.id}>
+                          <Link className="dropdown-item py-3" to={`/danh-muc/${sub.slug}`}>{sub.name}</Link>
+                        </li>
                       ))
                     }
                   </ul>
                 </li>
-
               </ul>
             </div>
           </div>
         </nav>
       </div>
 
-      {/* NỘI DUNG CHÍNH (RENDER BODY) */}
       <main className="container mt-4 min-vh-100">
         {children}
       </main>
 
-      {/* FOOTER */}
       <footer className="mt-5 bg-black text-white pt-5 pb-4">
         <div className="container">
           <div className="row gy-4 text-start">
-
             <div className="col-md-3">
               <h5 className="fw-bold mb-3 hover-scale hover-lift d-inline-block">GIỚI THIỆU</h5>
               <div className="mb-2">
@@ -272,6 +306,7 @@ const MainLayout = ({ children, session, menuData }) => {
           </div>
 
           <hr className="border-secondary mt-4" />
+
           <div className="row">
             <div className="col-12 text-center">
               <p className="mb-0 small text-secondary hover-scale d-inline-block">
