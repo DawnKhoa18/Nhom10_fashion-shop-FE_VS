@@ -1,13 +1,11 @@
 import React from 'react';
 import useCheckout from '../hooks/useCheckout';
-import { getFullImageUrl } from '../services/productService';
 
 const CheckoutPage = () => {
     const {
         cartItems,
         loading,
         formData,
-        errors,
         totalPrice,
         handleInputChange,
         handlePhoneChange,
@@ -30,24 +28,20 @@ const CheckoutPage = () => {
     return (
         <div className="container my-5">
             <div className="row">
+                {/* Cột trái: Form thông tin giao hàng */}
                 <div className="col-lg-6">
                     <h3 className="mb-3 fw-bold">Thông tin đơn hàng</h3>
-
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label className="fw-bold mb-1">Họ tên</label>
                             <input
                                 type="text"
                                 name="tenKH"
+                                className="form-control"
                                 value={formData.tenKH}
                                 onChange={handleInputChange}
-                                className={`form-control ${errors.tenKH ? 'is-invalid' : ''}`}
+                                required
                             />
-                            {errors.tenKH && (
-                                <div className="invalid-feedback">
-                                    {errors.tenKH}
-                                </div>
-                            )}
                         </div>
 
                         <div className="mb-3">
@@ -55,16 +49,12 @@ const CheckoutPage = () => {
                             <input
                                 type="text"
                                 name="phone"
+                                className="form-control"
                                 value={formData.phone}
                                 onChange={handlePhoneChange}
-                                className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
+                                required
                                 placeholder="Nhập số điện thoại 10-11 số"
                             />
-                            {errors.phone && (
-                                <div className="invalid-feedback">
-                                    {errors.phone}
-                                </div>
-                            )}
                         </div>
 
                         <div className="mb-3">
@@ -72,15 +62,11 @@ const CheckoutPage = () => {
                             <input
                                 type="text"
                                 name="diaChi"
+                                className="form-control"
                                 value={formData.diaChi}
                                 onChange={handleInputChange}
-                                className={`form-control ${errors.diaChi ? 'is-invalid' : ''}`}
+                                required
                             />
-                            {errors.diaChi && (
-                                <div className="invalid-feedback">
-                                    {errors.diaChi}
-                                </div>
-                            )}
                         </div>
 
                         <h3 className="mt-4 mb-3 fw-bold">Phương thức vận chuyển</h3>
@@ -157,6 +143,7 @@ const CheckoutPage = () => {
                     </form>
                 </div>
 
+                {/* Cột phải: Danh sách sản phẩm trong giỏ hàng */}
                 <div className="col-lg-6 mt-5 mt-lg-0">
                     <h3 className="mb-3 fw-bold">
                         <i className="bi bi-cart3 me-2"></i> Giỏ hàng
@@ -167,84 +154,47 @@ const CheckoutPage = () => {
                     ) : (
                         <>
                             {cartItems.map((item, index) => {
+                                // Tính toán giá an toàn
                                 const gia = Number(item.donGia) || 0;
                                 const soLuong = Number(item.soLuong) || 0;
                                 const thanhTien = Number(item.thanhTien) || (gia * soLuong);
 
                                 return (
-                                    <div
-                                        key={`${item.id}-${item.maSP}-${index}`}
-                                        className="d-flex mb-3 border-bottom pb-3 align-items-start"
-                                    >
+                                    <div key={`${item.maSP}-${item.mauSac}-${item.size}-${index}`} className="d-flex mb-3 border-bottom pb-3 align-items-start">
                                         <img
-                                            src={
-                                                item.hinhAnh
-                                                    ? getFullImageUrl(`/images/Products/${item.hinhAnh}`)
-                                                    : getFullImageUrl('/images/no-image.png')
-                                            }
-                                            style={{
-                                                width: '120px',
-                                                height: '120px',
-                                                objectFit: 'cover',
-                                                cursor: 'pointer'
-                                            }}
+                                            src={item.hinhAnh ? item.hinhAnh : "/Images/Products/no-image.png"}
+                                            style={{ width: '120px', height: '120px', objectFit: 'cover', cursor: 'pointer' }}
                                             className="rounded me-3"
                                             alt={item.tenSP}
                                         />
 
                                         <div className="flex-grow-1 d-flex flex-column justify-content-between" style={{ minWidth: 0 }}>
                                             <div>
-                                                <p
-                                                    className="m-0 fw-bold fs-5 text-truncate"
-                                                    style={{ maxWidth: '100%', cursor: 'pointer' }}
-                                                    title={item.tenSP}
-                                                >
+                                                <p className="m-0 fw-bold fs-5 text-truncate" style={{ maxWidth: '100%', cursor: 'pointer' }} title={item.tenSP}>
                                                     {item.tenSP}
                                                 </p>
-
                                                 <small className="text-muted d-block mt-1">
                                                     Màu: {item.mauSac} | Size: {item.size}
                                                 </small>
                                             </div>
 
                                             <div className="d-flex align-items-center mt-2">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-dark btn-sm px-2 py-0"
-                                                    onClick={() => handleQtyChange(item.maSP, item.mauSac, item.size, -1)}
-                                                >
-                                                    -
-                                                </button>
-
+                                                <button type="button" className="btn btn-outline-dark btn-sm px-2 py-0" onClick={() => handleQtyChange(item.maSP, item.mauSac, item.size, -1)}>-</button>
                                                 <input
                                                     type="text"
                                                     className="form-control text-center mx-2 p-0"
                                                     style={{ width: '50px', height: '28px' }}
                                                     value={item.soLuong}
-                                                    onChange={(e) =>
-                                                        handleQtyDirectChange(item.maSP, item.mauSac, item.size, e.target.value)
-                                                    }
+                                                    onChange={(e) => handleQtyDirectChange(item.maSP, item.mauSac, item.size, e.target.value)}
                                                 />
-
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-dark btn-sm px-2 py-0"
-                                                    onClick={() => handleQtyChange(item.maSP, item.mauSac, item.size, 1)}
-                                                >
-                                                    +
-                                                </button>
+                                                <button type="button" className="btn btn-outline-dark btn-sm px-2 py-0" onClick={() => handleQtyChange(item.maSP, item.mauSac, item.size, 1)}>+</button>
                                             </div>
 
                                             <div className="mt-2 d-flex justify-content-between align-items-center">
                                                 <span className="fw-bold fs-5 text-danger">
                                                     {new Intl.NumberFormat('vi-VN').format(thanhTien)}₫
                                                 </span>
-
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-danger btn-sm rounded-2 px-2 py-1"
-                                                    onClick={() => handleRemoveItem(item.maSP, item.mauSac, item.size)}
-                                                >
+                                                <button type="button" className="btn btn-outline-danger btn-sm rounded-2 px-2 py-1" onClick={() => handleRemoveItem(item.maSP, item.mauSac, item.size)}>
                                                     Xóa
                                                 </button>
                                             </div>
