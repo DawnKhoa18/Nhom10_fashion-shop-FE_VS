@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
-import { loginCustomer  } from "../services/authService";
+import { loginCustomer } from "../services/authService";
 
 function CustomerLogin() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    
     const [errors, setErrors] = useState({});
 
     const validate = () => {
@@ -25,14 +24,13 @@ function CustomerLogin() {
     };
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newErrors = validate();
-    if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors);
-        return; // Dừng lại, không gọi API
-    }
+        e.preventDefault();
+        const newErrors = validate();
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
         setErrors({});
-
         try {
             const response = await loginCustomer({ email, password });
             localStorage.setItem("token", response.data.token);
@@ -42,36 +40,9 @@ function CustomerLogin() {
         }
     };
 
-    <form onSubmit={handleSubmit}>
-
-    {/* Lỗi chung từ server */}
-    {errors.general && <div className="alert-error">{errors.general}</div>}
-
-    <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-    />
-    {errors.email && <span className="error-msg">{errors.email}</span>} {/* ← thêm */}
-
-    <input
-        type="password"
-        placeholder="Mật khẩu"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-    />
-    {errors.password && <span className="error-msg">{errors.password}</span>} {/* ← thêm */}
-
-    <button type="submit">
-        Đăng nhập
-    </button>
-
-    </form>
-
+    // ✅ Chỉ có 1 return duy nhất, form nằm bên trong
     return (
         <div className="auth-container">
-
             <div className="auth-card">
 
                 <div className="auth-left">
@@ -82,12 +53,15 @@ function CustomerLogin() {
                 </div>
 
                 <div className="auth-right">
-
                     <h2>Đăng nhập</h2>
-
                     <p>Chào mừng quay trở lại 👋</p>
 
                     <form onSubmit={handleSubmit}>
+
+                        {/* ✅ Lỗi server */}
+                        {errors.general && (
+                            <div className="alert-error">{errors.general}</div>
+                        )}
 
                         <input
                             type="email"
@@ -95,6 +69,10 @@ function CustomerLogin() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
+                        {/* ✅ Lỗi email */}
+                        {errors.email && (
+                            <span className="error-msg">{errors.email}</span>
+                        )}
 
                         <input
                             type="password"
@@ -102,29 +80,26 @@ function CustomerLogin() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
+                        {/* ✅ Lỗi password */}
+                        {errors.password && (
+                            <span className="error-msg">{errors.password}</span>
+                        )}
 
-                        <button type="submit">
-                            Đăng nhập
-                        </button>                        
+                        <button type="submit">Đăng nhập</button>
 
                     </form>
 
                     <p className="switch-link">
-                    Chưa có tài khoản?
-                    <span
-                        onClick={() => navigate("/register")}
-                    >
-                        {" "}Đăng ký ngay
-                    </span>
+                        Chưa có tài khoản?
+                        <span onClick={() => navigate("/register")}>
+                            {" "}Đăng ký ngay
+                        </span>
                     </p>
 
                 </div>
-
             </div>
-
         </div>
     );
-    
 }
 
 export default CustomerLogin;

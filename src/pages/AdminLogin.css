@@ -78,3 +78,20 @@
 
     cursor: pointer;
 }
+.alert-error {
+    background: #fff0f0;
+    color: #e53e3e;
+    border: 1px solid #fed7d7;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.error-msg {
+    color: #e53e3e;
+    font-size: 12px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    display: block;
+}
