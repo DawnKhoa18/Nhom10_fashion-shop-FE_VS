@@ -1,9 +1,20 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 const getAdminNavClass = ({ isActive }) => `nav-link${isActive ? ' active' : ''}`;
 
 const AdminLayout = ({ children }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('employeeId');
+    localStorage.removeItem('fullName');
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
+    localStorage.removeItem('accountType');
+    navigate('/login', { replace: true });
+  };
+
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
@@ -49,10 +60,10 @@ const AdminLayout = ({ children }) => {
         </ul>
 
         <div className="mt-auto pt-4">
-          <Link className="nav-link" to="/dang-nhap">
+          <button type="button" className="nav-link border-0 bg-transparent w-100 text-start" onClick={handleLogout}>
             <i className="bi bi-box-arrow-right"></i>
             <span>Đăng Xuất</span>
-          </Link>
+          </button>
         </div>
       </aside>
 

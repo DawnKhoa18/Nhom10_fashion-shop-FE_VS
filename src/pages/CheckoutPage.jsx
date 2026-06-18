@@ -1,11 +1,12 @@
 import React from 'react';
 import useCheckout from '../hooks/useCheckout';
-
+import { getFullImageUrl } from '../services/productService';
 const CheckoutPage = () => {
     const {
         cartItems,
         loading,
         formData,
+        errors,
         totalPrice,
         handleInputChange,
         handlePhoneChange,
@@ -37,11 +38,14 @@ const CheckoutPage = () => {
                             <input
                                 type="text"
                                 name="tenKH"
-                                className="form-control"
+                                className={`form-control ${errors.tenKH ? 'is-invalid' : ''}`}
                                 value={formData.tenKH}
                                 onChange={handleInputChange}
                                 required
                             />
+                            {errors.tenKH && (
+                                <div className="invalid-feedback">{errors.tenKH}</div>
+                            )}
                         </div>
 
                         <div className="mb-3">
@@ -49,12 +53,15 @@ const CheckoutPage = () => {
                             <input
                                 type="text"
                                 name="phone"
-                                className="form-control"
+                                className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
                                 value={formData.phone}
                                 onChange={handlePhoneChange}
                                 required
                                 placeholder="Nhập số điện thoại 10-11 số"
                             />
+                            {errors.phone && (
+                                <div className="invalid-feedback">{errors.phone}</div>
+                            )}
                         </div>
 
                         <div className="mb-3">
@@ -62,11 +69,14 @@ const CheckoutPage = () => {
                             <input
                                 type="text"
                                 name="diaChi"
-                                className="form-control"
+                                className={`form-control ${errors.diaChi ? 'is-invalid' : ''}`}
                                 value={formData.diaChi}
                                 onChange={handleInputChange}
                                 required
                             />
+                            {errors.diaChi && (
+                                <div className="invalid-feedback">{errors.diaChi}</div>
+                            )}
                         </div>
 
                         <h3 className="mt-4 mb-3 fw-bold">Phương thức vận chuyển</h3>
@@ -162,7 +172,11 @@ const CheckoutPage = () => {
                                 return (
                                     <div key={`${item.maSP}-${item.mauSac}-${item.size}-${index}`} className="d-flex mb-3 border-bottom pb-3 align-items-start">
                                         <img
-                                            src={item.hinhAnh ? item.hinhAnh : "/Images/Products/no-image.png"}
+                                            src={
+                                                    item.hinhAnh
+                                                        ? getFullImageUrl(`/images/Products/${item.hinhAnh}`)
+                                                        : getFullImageUrl('/images/no-image.png')
+                                                }
                                             style={{ width: '120px', height: '120px', objectFit: 'cover', cursor: 'pointer' }}
                                             className="rounded me-3"
                                             alt={item.tenSP}

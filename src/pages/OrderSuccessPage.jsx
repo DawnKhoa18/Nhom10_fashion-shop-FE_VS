@@ -1,8 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const OrderSuccessPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const orderNumber = location.state?.orderNumber;
 
     return (
         <div className="container my-5 d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
@@ -24,6 +26,12 @@ const OrderSuccessPage = () => {
                 <p className="fs-5 text-dark mb-2 fw-medium">
                     Cảm ơn bạn đã mua sắm tại WebShop.
                 </p>
+
+                {orderNumber && (
+                    <div className="alert alert-success border-0 mb-4" role="alert">
+                        Mã đơn hàng của bạn: <strong>{orderNumber}</strong>
+                    </div>
+                )}
                 
                 <p className="text-muted mb-4 px-3" style={{ fontSize: '15px', lineHeight: '1.6' }}>
                     Yêu cầu đặt hàng của bạn đã được ghi nhận thành công và đang trong quá trình xử lý. Hệ thống sẽ sớm liên hệ để xác nhận đơn hàng với bạn.
