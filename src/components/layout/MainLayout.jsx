@@ -40,12 +40,12 @@ const MainLayout = ({ children, session, menuData }) => {
                 <div className="d-none d-lg-block">Cửa hàng</div>
               </Link>
 
-              <Link to="/Login" className="text-white mx-2 mx-lg-3 text-center text-decoration-none link-light hover-scale hover-lift">
+              <Link to="/login" className="text-white mx-2 mx-lg-3 text-center text-decoration-none link-light hover-scale hover-lift">
                 <i className="bi bi-person fs-4"></i>
                 <div className="d-none d-lg-block">Đăng nhập</div>
               </Link>
 
-              <Link to="/gio-hang" className="text-white mx-3 text-center text-decoration-none link-light hover-scale hover-lift">
+              <Link to="/checkout" className="text-white mx-3 text-center text-decoration-none link-light hover-scale hover-lift">
                 <div className="position-relative d-inline-block">
                   <i className="bi bi-cart3 fs-4"></i>
                   {/* THAY SỐ 0 BẰNG BIẾN CARTCOUNT Ở DÒNG DƯỚI */}

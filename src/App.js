@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import CheckoutPage from './pages/CheckoutPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
 import AdminHome from './pages/AdminHome';
 import AdminProducts from './pages/AdminProducts';
 import AdminProductForm from './pages/AdminProductForm';
@@ -37,6 +38,7 @@ function AppRoutes() {
       <Route path="/danh-muc/:slug" element={<ProductList />} />
       <Route path="/san-pham/:id" element={<ProductDetail />} />
       <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/checkout/success" element={<OrderSuccessPage />} />
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/admin/san-pham" element={<AdminProducts />} />
       <Route path="/admin/san-pham/them" element={<AdminProductForm mode="create" />} />
