@@ -1,30 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCategories } from '../../hooks/useCategories';
 import { useCart } from '../../context/CartContext';
 
 const MainLayout = ({ children, session, menuData }) => {
+  const navigate = useNavigate();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const { categories, parentCats, loading } = useCategories();
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
   const { cartCount } = useCart();
 
   const [fullName, setFullName] = useState(localStorage.getItem("fullName"));
-  const role = localStorage.getItem("role");
+  const [role, setRole] = useState(localStorage.getItem("role"));
+  const [accountType, setAccountType] = useState(localStorage.getItem("accountType"));
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const isEmployee = accountType === "EMPLOYEE";
 
   useEffect(() => {
-    const updateProfileName = () => setFullName(localStorage.getItem("fullName"));
+    const updateProfileName = () => {
+      setFullName(localStorage.getItem("fullName"));
+      setRole(localStorage.getItem("role"));
+      setAccountType(localStorage.getItem("accountType"));
+    };
     window.addEventListener('profileUpdated', updateProfileName);
     return () => window.removeEventListener('profileUpdated', updateProfileName);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("customerId");
+    localStorage.removeItem("employeeId");
     localStorage.removeItem("fullName");
     localStorage.removeItem("email");
     localStorage.removeItem("role");
     localStorage.removeItem("accountType");
     window.location.href = "/login";
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    const keyword = searchKeyword.trim();
+    if (!keyword) return;
+    navigate(`/tim-kiem?keyword=${encodeURIComponent(keyword)}`);
   };
 
   return (
@@ -36,9 +52,15 @@ const MainLayout = ({ children, session, menuData }) => {
               <img src="/images/logoShopQuanAo.jpg" alt="logo" style={{ height: '60px', cursor: 'pointer' }} />
             </Link>
 
-            <form className="header-search d-none d-lg-flex flex-grow-1 mx-4" style={{ maxWidth: '600px' }}>
+            <form className="header-search d-none d-lg-flex flex-grow-1 mx-4" style={{ maxWidth: '600px' }} onSubmit={handleSearchSubmit}>
               <div className="input-group">
-                <input type="text" className="form-control" placeholder="Bạn đang tìm gì..." />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Bạn đang tìm gì..."
+                  value={searchKeyword}
+                  onChange={(event) => setSearchKeyword(event.target.value)}
+                />
                 <button className="btn btn-outline-light" type="submit">
                   <i className="bi bi-search"></i>
                 </button>
@@ -53,14 +75,14 @@ const MainLayout = ({ children, session, menuData }) => {
 
               {fullName ? (
                 <div className="text-white mx-2 mx-lg-3 text-center">
-                  <Link to="/tai-khoan" className="text-white text-decoration-none d-block">
+                  <Link to={isEmployee ? "/admin" : "/tai-khoan"} className="text-white text-decoration-none d-block">
                     <i className="bi bi-person-circle fs-4"></i>
                     <div className="d-none d-lg-block" style={{ fontSize: '14px' }}>
                       {fullName}
                     </div>
                   </Link>
                   <small style={{ color: "#ffc107", fontSize: "12px" }}>
-                    {role}
+                    {isEmployee ? "Admin" : role}
                   </small>
                   <div>
                     <button

@@ -21,6 +21,7 @@ import './App.css';
 import './Admin.css';
 import CustomerLogin from "./pages/CustomerLogin";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function AppRoutes() {
   const location = useLocation();
@@ -30,12 +31,14 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<CustomerLogin />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/quen-mat-khau" element={<ForgotPassword />} />
       <Route path="/login/customer" element={<CustomerLogin />} />
       <Route path="/login/admin" element={<CustomerLogin />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/tat-ca" element={<ProductList defaultSlug="tat-ca" />} />
       <Route path="/hang-moi" element={<ProductList defaultSlug="hang-moi" />} />
       <Route path="/hang-ban-chay" element={<ProductList defaultSlug="hang-ban-chay" />} />
+      <Route path="/tim-kiem" element={<ProductList defaultSlug="tat-ca" />} />
       <Route path="/danh-muc/:slug" element={<ProductList />} />
       <Route path="/san-pham/:id" element={<ProductDetail />} />
       <Route path="/checkout" element={<CheckoutPage />} />

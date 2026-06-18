@@ -214,7 +214,7 @@ const useCheckout = () => {
                 if (res.success) {
                     navigate('/checkout/success', {
                         replace: true,
-                        state: { orderNumber: res.orderNumber }
+                        state: { orderNumber: res.orderNumber, emailSent: res.emailSent }
                     });
                 } else {
                     alert(res.message || "Đặt hàng thất bại!");

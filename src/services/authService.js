@@ -13,3 +13,15 @@ export const loginAdmin = (data) => {
 export const register = (data) => {
     return axios.post(`${API_URL}/register`, data);
 };
+
+export const loginWithGoogle = (credential) => {
+    return axios.post(`${API_URL}/google`, { credential });
+};
+
+export const forgotPassword = (email) => {
+    return axios.post(`${API_URL}/forgot-password`, { email });
+};
+
+export const resetPassword = (data) => {
+    return axios.post(`${API_URL}/reset-password`, data);
+};

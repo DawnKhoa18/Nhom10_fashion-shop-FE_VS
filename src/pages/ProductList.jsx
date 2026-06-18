@@ -13,6 +13,8 @@ const ProductList = ({ defaultSlug }) => {
   // Bóc tách toàn bộ "đồ chơi" từ Custom Hook ra dựa trên activeSlug
   const {
     products,
+    pageTitle,
+    keyword,
     banner,
     currentSort,
     hienXemThem,
@@ -36,6 +38,17 @@ const ProductList = ({ defaultSlug }) => {
       )}
 
       {/* 2. Thanh Bộ Lọc Sắp Xếp */}
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+        <div>
+          <h3 className="fw-bold mb-1">{pageTitle}</h3>
+          {keyword && (
+            <p className="text-muted mb-0">
+              Từ khóa: <span className="fw-semibold">"{keyword}"</span>
+            </p>
+          )}
+        </div>
+      </div>
+
       <div className="d-flex justify-content-end mb-3">
         <div className="d-flex align-items-center me-3">
           <label htmlFor="sortOption" className="fw-bold">Bộ lọc:</label>
@@ -66,6 +79,14 @@ const ProductList = ({ defaultSlug }) => {
       </div>
 
       {/* 4. Khối xử lý Nút Bấm XEM THÊM */}
+      {products.length === 0 && (
+        <div className="text-center py-5">
+          <i className="bi bi-search fs-1 text-muted"></i>
+          <h5 className="mt-3">Không tìm thấy sản phẩm phù hợp</h5>
+          <p className="text-muted">Bạn thử nhập từ khóa khác hoặc xem tất cả sản phẩm nhé.</p>
+        </div>
+      )}
+
       {hienXemThem && (
         <div className="text-center mt-4">
           <button 
