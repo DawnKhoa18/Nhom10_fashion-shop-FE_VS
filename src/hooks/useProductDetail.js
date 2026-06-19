@@ -114,9 +114,9 @@ const useProductDetail = () => {
 
         const success = await addToCart(data.product.id, selectedColor, selectedSize, qty);
         if (success) {
-            showToast("🎉 Sản phẩm đã được thêm vào giỏ hàng thành công!");
+            showToast("Sản phẩm đã được thêm vào giỏ hàng thành công!");
         } else {
-            showToast("❌ Có lỗi xảy ra, vui lòng thử lại!");
+            showToast("Có lỗi xảy ra, vui lòng thử lại!");
         }
     };
 

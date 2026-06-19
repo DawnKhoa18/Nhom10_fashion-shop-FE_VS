@@ -55,7 +55,7 @@ const MyOrders = () => {
     <div className="container my-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold mb-0">Đơn hàng của tôi</h2>
-        <Link to="/" className="btn btn-outline-dark">Tiếp tục mua sắm</Link>
+        <Link to="/" className="btn btn-dark btn-view fw-bold">Tiếp tục mua sắm</Link>
       </div>
 
       {error && <div className="alert alert-danger">{error}</div>}

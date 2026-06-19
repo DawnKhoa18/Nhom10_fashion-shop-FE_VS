@@ -135,7 +135,7 @@ const CheckoutPage = () => {
                             </label>
                         </div>
 
-                        <button className="btn btn-dark w-100 mt-3 py-2 fw-bold" type="submit">
+                        <button className="btn btn-dark w-100 mt-3 py-2 fw-bold btn-view" type="submit">
                             THANH TOÁN
                         </button>
                     </form>

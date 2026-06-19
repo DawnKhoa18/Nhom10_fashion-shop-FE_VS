@@ -145,11 +145,13 @@ const ImageSearchPage = () => {
             </div>
           </section>
 
-          <div className="d-flex align-items-center justify-content-between mt-5 mb-3">
-            <div>
-              <h2 className="fw-bold mb-1">Sản phẩm tương tự</h2>
+          <div className="d-flex align-items-center justify-content-center my-5">
+            <div className="line-gradient"></div>
+            <div className="text-center mx-3">
+              <h2 className="fw-bold mb-1 text-uppercase">Sản phẩm tương tự</h2>
               <p className="text-muted mb-0">{products.length} sản phẩm được đề xuất cho bạn.</p>
             </div>
+            <div className="line-gradient" style={{ transform: 'rotate(180deg)' }}></div>
           </div>
 
           {products.length > 0 ? (

@@ -73,7 +73,7 @@ const AccountPage = () => {
                   <div className="col-12"><label className="form-label fw-semibold">Địa chỉ</label><input className="form-control" value={profile.address} onChange={(e) => setProfile({ ...profile, address: e.target.value })} /></div>
                   <div className="col-12"><label className="form-label fw-semibold">Sở thích</label><textarea className="form-control" rows="3" value={profile.hobby} onChange={(e) => setProfile({ ...profile, hobby: e.target.value })} /></div>
                 </div>
-                <button className="btn btn-dark mt-4 px-4" disabled={saving}>{saving ? 'Đang lưu...' : 'Lưu thay đổi'}</button>
+                <button className="btn btn-dark mt-4 px-4 btn-view fw-bold" disabled={saving}>{saving ? 'Đang lưu...' : 'Lưu thay đổi'}</button>
               </form>
             ) : (
               <form onSubmit={changePassword} style={{ maxWidth: 550 }}>
@@ -88,7 +88,7 @@ const AccountPage = () => {
                 <div className="mb-3"><label className="form-label fw-semibold">Mật khẩu hiện tại</label><input type="password" className="form-control" value={passwords.currentPassword} onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} required /></div>
                 <div className="mb-3"><label className="form-label fw-semibold">Mật khẩu mới</label><input type="password" className="form-control" minLength="6" value={passwords.newPassword} onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} required /></div>
                 <div className="mb-3"><label className="form-label fw-semibold">Xác nhận mật khẩu mới</label><input type="password" className="form-control" minLength="6" value={passwords.confirmPassword} onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })} required /></div>
-                <button className="btn btn-dark px-4" disabled={saving}>{saving ? 'Đang xử lý...' : 'Đổi mật khẩu'}</button>
+                <button className="btn btn-dark px-4 btn-view fw-bold" disabled={saving}>{saving ? 'Đang xử lý...' : 'Đổi mật khẩu'}</button>
               </form>
             )}
           </div>

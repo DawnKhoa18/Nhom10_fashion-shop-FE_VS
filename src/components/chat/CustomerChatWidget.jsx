@@ -89,7 +89,7 @@ const CustomerChatWidget = () => {
             <div className="customer-chat-login">
               <i className="bi bi-person-lock fs-2" />
               <p>Vui lòng đăng nhập để trò chuyện với cửa hàng.</p>
-              <a href="/login" className="btn btn-dark btn-sm">Đăng nhập</a>
+              <a href="/login" className="btn btn-dark btn-sm btn-view fw-bold">Đăng nhập</a>
             </div>
           ) : (
             <>

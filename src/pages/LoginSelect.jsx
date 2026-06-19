@@ -17,7 +17,7 @@ function LoginSelect() {
 
                 <div className="account-section">
 
-                    <h3>👤 Khách hàng</h3>
+                    <h3>Khách hàng</h3>
 
                     <button
                         className="customer-login"
@@ -43,7 +43,7 @@ function LoginSelect() {
 
                 <div className="account-section">
 
-                    <h3>👨‍💼 Admin / Nhân viên</h3>
+                    <h3>Admin / Nhân viên</h3>
 
                     <button
                         className="admin-login"

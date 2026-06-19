@@ -135,7 +135,7 @@ const useCheckout = () => {
                             : x
                     )
                 );
-                refreshCartCount(); // Đồng bộ icon sau khi đổi số lượng
+                refreshCartCount();
             })
             .catch(err => console.error("Lỗi cập nhật số lượng:", err));
     };
@@ -160,7 +160,7 @@ const useCheckout = () => {
                             : x
                     )
                 );
-                refreshCartCount(); // Đồng bộ icon sau khi đổi số lượng
+                refreshCartCount();
             })
             .catch(err => console.error("Lỗi cập nhật trực tiếp số lượng:", err));
     };
@@ -243,7 +243,7 @@ const useCheckout = () => {
                         window.location.assign(res.payUrl);
                         return;
                     }
-                    resetCartCount(); // Gọi reset khi thành công
+                    resetCartCount();
                     navigate('/checkout/success', {
                         replace: true,
                         state: { orderNumber: res.orderNumber, emailSent: res.emailSent }

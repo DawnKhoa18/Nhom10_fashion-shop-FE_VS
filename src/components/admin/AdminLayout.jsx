@@ -57,49 +57,49 @@ const AdminLayout = ({ children }) => {
         </div>
 
         <ul className="nav flex-column gap-2">
-          <li className="nav-item">
+          <li className="nav-item fw-bold">
             <Link className="nav-link" to="/">
               <i className="bi bi-house-door-fill"></i>
               <span>Trang Chủ Web</span>
             </Link>
           </li>
 
-          <li className="nav-item">
+          <li className="nav-item fw-bold">
             <NavLink className={getAdminNavClass} to="/admin" end>
               <i className="bi bi-grid-fill"></i>
               <span>Trang Chủ Admin</span>
             </NavLink>
           </li>
 
-          <li className="nav-item">
+          <li className="nav-item fw-bold">
             <NavLink className={getAdminNavClass} to="/admin/san-pham">
               <i className="bi bi-bag-fill"></i>
               <span>Sản Phẩm</span>
             </NavLink>
           </li>
 
-          <li className="nav-item">
+          <li className="nav-item fw-bold">
             <NavLink className={getAdminNavClass} to="/admin/don-hang">
               <i className="bi bi-box-seam"></i>
               <span>Đơn Hàng</span>
             </NavLink>
           </li>
 
-          <li className="nav-item">
+          <li className="nav-item fw-bold">
             <NavLink className={getAdminNavClass} to="/admin/thong-ke">
               <i className="bi bi-bar-chart-line-fill"></i>
               <span>Thống Kê</span>
             </NavLink>
           </li>
 
-          <li className="nav-item">
+          <li className="nav-item fw-bold">
             <NavLink className={getAdminNavClass} to="/admin/khach-hang">
               <i className="bi bi-people-fill"></i>
               <span>Khách Hàng</span>
             </NavLink>
           </li>
 
-          <li className="nav-item">
+          <li className="nav-item fw-bold">
             <NavLink className={getAdminNavClass} to="/admin/tro-chuyen">
               <span className="admin-chat-nav-icon">
                 <i className="bi bi-chat-dots-fill"></i>
@@ -110,7 +110,7 @@ const AdminLayout = ({ children }) => {
           </li>
         </ul>
 
-        <div className="mt-auto pt-4">
+        <div className="mt-auto pt-4 fw-bold">
           <button type="button" className="nav-link border-0 bg-transparent w-100 text-start" onClick={handleLogout}>
             <i className="bi bi-box-arrow-right"></i>
             <span>Đăng Xuất</span>
