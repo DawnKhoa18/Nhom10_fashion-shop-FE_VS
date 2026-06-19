@@ -3,7 +3,6 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 const useProductList = (defaultSlug) => {
-  // 1. Đổi id thành slug để lấy đúng tham số từ Route /danh-muc/:slug
   const { slug } = useParams(); 
   const [searchParams, setSearchParams] = useSearchParams();
   
@@ -16,18 +15,15 @@ const useProductList = (defaultSlug) => {
   const currentSort = searchParams.get('sort') || 'default';
   const keyword = searchParams.get('keyword') || '';
   
-  // 2. Cập nhật activeSlug dựa trên slug lấy từ useParams()
   const activeSlug = slug || defaultSlug || 'tat-ca';
   const API_BASE_URL = "http://localhost:8080";
 
-  // --- CHỈ THÊM ĐOẠN NÀY ĐỂ CUỘN LÊN ĐẦU TRANG ---
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth' // Cuộn mượt lên đầu trang
+      behavior: 'smooth'
     });
   }, [activeSlug, currentSort, keyword]); 
-  // ----------------------------------------------
 
   useEffect(() => {
     axios.get(`${API_BASE_URL}/api/SanPham/danh-sach`, {
@@ -47,7 +43,6 @@ const useProductList = (defaultSlug) => {
     .catch(err => console.error("Lỗi lấy danh sách sản phẩm: ", err));
   }, [activeSlug, currentSort, keyword, take]);
 
-  // 3. Reset số lượng sản phẩm hiển thị khi chuyển danh mục
   useEffect(() => {
     setTake(30);
   }, [slug, defaultSlug, keyword]);

@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Thêm useNavigate
+import { useParams, useNavigate } from 'react-router-dom'; 
 import { getProductDetail, getSizesByColor } from '../services/productService';
-import { useCart } from '../context/CartContext'; // Thêm useCart
+import { useCart } from '../context/CartContext'; 
 
 const useProductDetail = () => {
     const { id } = useParams();
-    const navigate = useNavigate(); // Dùng để chuyển trang
-    const { addToCart } = useCart(); // Lấy hàm từ Context toàn cục
+    const navigate = useNavigate(); 
+    const { addToCart } = useCart();
     
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(null);
@@ -22,7 +22,6 @@ const useProductDetail = () => {
     const [offset, setOffset] = useState(0);
     const thumbScrollRef = useRef(null);
 
-    // Khởi tạo trạng thái thông báo toast (tự tùy biến không cần cài thư viện)
     const [toastMessage, setToastMessage] = useState("");
 
     useEffect(() => {
@@ -103,9 +102,6 @@ const useProductDetail = () => {
         setOffset(newOffset);
     };
 
-    // ================= CHỈ THÊM CÁC HÀM XỬ LÝ CLICK CLICK DƯỚI ĐÂY =================
-    
-    // Logic khi bấm "THÊM GIỎ HÀNG"
     const handleAddToCart = async () => {
         if (!selectedColor) {
             showToast("Vui lòng chọn màu sắc!");
@@ -118,13 +114,12 @@ const useProductDetail = () => {
 
         const success = await addToCart(data.product.id, selectedColor, selectedSize, qty);
         if (success) {
-            showToast("🎉 Sản phẩm đã được thêm vào giỏ hàng thành công!");
+            showToast("Sản phẩm đã được thêm vào giỏ hàng thành công!");
         } else {
-            showToast("❌ Có lỗi xảy ra, vui lòng thử lại!");
+            showToast("Có lỗi xảy ra, vui lòng thử lại!");
         }
     };
 
-    // Logic khi bấm "MUA NGAY"
     const handleBuyNow = async () => {
         if (!selectedColor || (data?.isCoSize && !selectedSize)) {
             showToast("Vui lòng chọn đầy đủ màu sắc & kích thước!");
@@ -132,16 +127,15 @@ const useProductDetail = () => {
         }
         const success = await addToCart(data.product.id, selectedColor, selectedSize, qty);
         if (success) {
-            navigate('/checkout'); // Chuyển thẳng sang trang thanh toán luôn
+            navigate('/checkout');
         }
     };
 
-    // Hàm tạo hiệu ứng Toast tự chế biến bằng Bootstrap nhanh gọn
     const showToast = (msg) => {
         setToastMessage(msg);
         setTimeout(() => {
             setToastMessage("");
-        }, 3000); // 3 giây tự tắt
+        }, 3000);
     };
 
     return {
@@ -150,7 +144,7 @@ const useProductDetail = () => {
         activeTab, setActiveTab, trackRef, offset, allImages,
         handleColorClick, handleQtyChange, decreaseQty, increaseQty,
         prevImage, nextImage, slideRelated, thumbScrollRef,
-        handleAddToCart, handleBuyNow, toastMessage // Xuất thêm 3 biến mới ra ngoài giao diện
+        handleAddToCart, handleBuyNow, toastMessage 
     };
 };
 

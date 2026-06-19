@@ -60,11 +60,9 @@ const MainLayout = ({ children, session, menuData }) => {
                   placeholder="Bạn đang tìm gì..."
                   value={searchKeyword}
                   onChange={(event) => setSearchKeyword(event.target.value)}
-                  // Tăng padding bên phải để chữ không trôi ra sau icon xóa
                   style={{ paddingRight: '50px' }}
                 />
 
-                {/* Icon xóa nhanh */}
                 {searchKeyword && (
                   <button
                     type="button"
@@ -72,7 +70,7 @@ const MainLayout = ({ children, session, menuData }) => {
                     style={{
                       zIndex: 10,
                       top: 0,
-                      right: '45px', // Căn chỉnh vị trí: đẩy sát vào mép trái nút tìm kiếm
+                      right: '45px',
                       height: '100%',
                       background: 'transparent',
                       color: '#6c757d',

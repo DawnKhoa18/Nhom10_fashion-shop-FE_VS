@@ -14,7 +14,6 @@ export const useCategories = () => {
     loadData();
   }, []);
 
-  // Logic lọc cha/con nằm gọn ở đây
   const parentCats = categories.filter(cat => cat.parentId === null);
 
   return { categories, parentCats, loading };

@@ -1,16 +1,14 @@
 import React from 'react';
-import { useParams } from 'react-router-dom'; // <--- Thêm để lấy slug từ URL
+import { useParams } from 'react-router-dom'; 
 import useProductList from '../hooks/useProductList';
 import ProductCard from '../components/product/ProductCard';
 
 const ProductList = ({ defaultSlug }) => {
-  // Lấy slug từ URL (ví dụ: /danh-muc/ao-thun)
   const { slug } = useParams();
 
-  // Ưu tiên dùng slug từ URL, nếu không có thì dùng defaultSlug
+
   const activeSlug = slug || defaultSlug;
 
-  // Bóc tách toàn bộ "đồ chơi" từ Custom Hook ra dựa trên activeSlug
   const {
     products,
     pageTitle,
@@ -25,7 +23,6 @@ const ProductList = ({ defaultSlug }) => {
 
   return (
     <div className="container my-5">
-      {/* 1. Hiển thị Banner động */}
       {banner && (
         <div className="mb-4">
           <img
@@ -37,16 +34,13 @@ const ProductList = ({ defaultSlug }) => {
         </div>
       )}
 
-      {/* 2. Thanh Bộ Lọc Sắp Xếp */}
       <div className="d-flex flex-column align-items-center mb-4">
-        {/* Phần tiêu đề với đường gạch 2 bên */}
         <div className="d-flex align-items-center justify-content-center w-100">
           <div className="line-gradient"></div>
           <h3 className="mx-3 fw-bold text-uppercase mb-0 text-nowrap">{pageTitle}</h3>
           <div className="line-gradient" style={{ transform: 'rotate(180deg)' }}></div>
         </div>
 
-        {/* Phần từ khóa hiển thị dưới tiêu đề nếu có */}
         {keyword && (
           <p className="text-muted mt-2 mb-0">
             Từ khóa: <span className="fw-semibold">"{keyword}"</span>
@@ -76,14 +70,12 @@ const ProductList = ({ defaultSlug }) => {
         </select>
       </div>
 
-      {/* 3. Danh sách sản phẩm qua vòng lặp map */}
       <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
         {products.map((sp) => (
           <ProductCard key={sp.id} product={sp} />
         ))}
       </div>
 
-      {/* 4. Khối xử lý Nút Bấm XEM THÊM */}
       {products.length === 0 && (
         <div className="text-center py-5">
           <i className="bi bi-search fs-1 text-muted"></i>

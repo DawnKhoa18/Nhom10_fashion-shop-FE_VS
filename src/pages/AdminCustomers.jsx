@@ -70,7 +70,7 @@ const AdminCustomers = () => {
       <h2 className="fw-bold mb-3 text-center">Quản lý khách hàng</h2>
 
       <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
-        <Link to="/admin/khach-hang/them" className="btn btn-success">
+        <Link to="/admin/khach-hang/them" className="btn btn-dark btn-view fw-bold">
           <i className="bi bi-person-plus-fill"></i> Thêm khách hàng
         </Link>
 
@@ -128,7 +128,7 @@ const AdminCustomers = () => {
                     <td className="text-center"><StatusBadge status={customer.trangThai} /></td>
                     <td>{formatDateTime(customer.ngayTao)}</td>
                     <td className="text-center">
-                      <Link to={`/admin/khach-hang/sua/${customer.maKH}`} className="btn btn-sm btn-warning">
+                      <Link to={`/admin/khach-hang/sua/${customer.maKH}`} className="btn btn-sm btn-warning fw-bold">
                         Sửa
                       </Link>
                     </td>

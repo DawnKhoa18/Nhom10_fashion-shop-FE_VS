@@ -34,7 +34,7 @@ body {
     flex-direction: column;
     align-items: center;
     transition: transform 0.25s ease !important;
-    text-decoration: none !important; /* Bỏ gạch chân mặc định */
+    text-decoration: none !important;
 }
 
 .hover-lift:hover {
@@ -43,17 +43,16 @@ body {
 
 /* Hiệu ứng Scale cho icon */
 .hover-scale i {
-    display: inline-block; /* Quan trọng: Transform không ăn với thẻ inline thuần */
+    display: inline-block; 
     transition: transform 0.25s ease;
 }
 
-/* Khi hover vào cha (.hover-scale), icon (i) bên trong sẽ to lên */
 .hover-scale:hover i {
     transform: scale(1.25);
-    color: #FFA500 !important; /* Ép icon đổi màu cam */
+    color: #FFA500 !important; 
 }
 
-/* Ép tất cả văn bản bên trong đổi màu khi hover */
+
 .hover-scale:hover, 
 .hover-scale:hover .small,
 .hover-scale:hover div {
@@ -85,22 +84,17 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    /* Đẩy badge ra góc icon */
     transform: translate(50%, -20%) !important;
-    
-    /* Biến thành Flexbox để căn giữa chữ số */
     display: flex !important;
-    align-items: center;      /* Căn giữa theo chiều dọc */
-    justify-content: center;   /* Căn giữa theo chiều ngang */
-    
-    /* Kích thước vòng tròn */
+    align-items: center;      
+    justify-content: center;   
     min-width: 18px;
     height: 18px;
-    padding: 0; /* Xóa padding để không bị lệch */
+    padding: 0; 
     
     font-size: 0.65rem !important;
     font-weight: bold;
-    line-height: 1; /* Reset line-height để không bị đẩy chữ xuống dưới */
+    line-height: 1; 
     z-index: 1;
 }
 
@@ -329,12 +323,12 @@ body {
     height: 100%;
     background: #FFA500;
     transition: all .6s ease;
-    z-index: -1; /* Nằm dưới lớp chữ */
+    z-index: -1; 
 }
 
 /* KHI HOVER: Chữ biến thành màu đen và viền biến thành màu cam */
 .btn-view:hover, .btn-load-more:hover, .btn-all:hover, .btn-addcart:hover, .btn-remove:hover, .btn-back:hover {
-    color: #000 !important; /* HOVER VÔ: Ép chữ chuyển sang màu đen */
+    color: #000 !important; 
     border-color: #FFA500;
 }
 

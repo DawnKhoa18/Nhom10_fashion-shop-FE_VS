@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCartData, updateCartQty, removeFromCartApi, submitOrder } from '../services/cartService';
-import { useCart } from '../context/CartContext'; // Đã thêm import
+import { useCart } from '../context/CartContext';
 
 const useCheckout = () => {
     const navigate = useNavigate();
-    const { resetCartCount, refreshCartCount } = useCart(); // Đã thêm lấy hàm từ context
+    const { resetCartCount, refreshCartCount } = useCart();
 
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -125,7 +125,7 @@ const useCheckout = () => {
                             : x
                     )
                 );
-                refreshCartCount(); // Đồng bộ icon sau khi đổi số lượng
+                refreshCartCount();
             })
             .catch(err => console.error("Lỗi cập nhật số lượng:", err));
     };
@@ -150,7 +150,7 @@ const useCheckout = () => {
                             : x
                     )
                 );
-                refreshCartCount(); // Đồng bộ icon sau khi đổi số lượng
+                refreshCartCount();
             })
             .catch(err => console.error("Lỗi cập nhật trực tiếp số lượng:", err));
     };
@@ -233,7 +233,7 @@ const useCheckout = () => {
                         window.location.assign(res.payUrl);
                         return;
                     }
-                    resetCartCount(); // Gọi reset khi thành công
+                    resetCartCount();
                     navigate('/checkout/success', {
                         replace: true,
                         state: { orderNumber: res.orderNumber, emailSent: res.emailSent }

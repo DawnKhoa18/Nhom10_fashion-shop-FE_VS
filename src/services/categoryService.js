@@ -1,4 +1,3 @@
-// src/services/categoryService.js
 const API_BASE_URL = "http://localhost:8080/api/categories";
 
 export const getAllCategories = async () => {
@@ -10,6 +9,6 @@ export const getAllCategories = async () => {
         return await response.json();
     } catch (error) {
         console.error("Lỗi API Category:", error);
-        return []; // Trả về mảng rỗng để giao diện không bị crash
+        return [];
     }
 };

@@ -14,7 +14,6 @@ export const useHomeData = (carouselId) => {
     useEffect(() => {
         let isMounted = true;
 
-        // 1. Logic lấy dữ liệu
         const loadData = async () => {
             setLoading(true);
             try {
@@ -28,31 +27,27 @@ export const useHomeData = (carouselId) => {
         };
         loadData();
 
-        // 2. Logic khởi tạo Carousel
         const bootstrap = window.bootstrap;
         let carouselInstance = null;
 
-        // Dùng setTimeout để đảm bảo DOM đã hoàn toàn ổn định
         const timer = setTimeout(() => {
             if (bootstrap && carouselId) {
                 const element = document.querySelector(carouselId);
                 if (element) {
-                    // Khởi tạo instance
                     carouselInstance = new bootstrap.Carousel(element, {
                         interval: 3000,
                         ride: 'carousel',
-                        pause: 'hover' // Dừng lại khi di chuột vào (tốt cho UX)
+                        pause: 'hover'
                     });
 
-                    // CỰC KỲ QUAN TRỌNG: Lệnh này ép carousel chạy ngay lập tức
                     carouselInstance.cycle();
                 }
             }
-        }, 150); // Delay nhẹ 150ms
+        }, 150);
 
         return () => {
             isMounted = false;
-            clearTimeout(timer); // Xóa timer nếu user thoát trang nhanh
+            clearTimeout(timer); 
             if (carouselInstance) {
                 carouselInstance.dispose();
             }

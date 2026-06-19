@@ -73,10 +73,8 @@ const ForgotPassword = () => {
         confirmPassword: form.confirmPassword,
       });
       
-      // Hiển thị thông báo thành công thông qua state message
       setMessage(response.data);
       
-      // Chờ 2 giây để người dùng đọc thông báo rồi mới chuyển trang
       setTimeout(() => {
         navigate('/login');
       }, 2000);

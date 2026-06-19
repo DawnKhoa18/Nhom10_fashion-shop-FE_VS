@@ -98,7 +98,7 @@ const CustomerOrderDetail = () => {
           <h2 className="fw-bold mb-1">Chi tiết đơn {order.orderNumber}</h2>
           <span className="text-muted">Ngày đặt: {formatDate(order.createdAt)}</span>
         </div>
-        <Link to="/don-hang-cua-toi" className="btn btn-outline-dark">Quay lại</Link>
+        <Link to="/don-hang-cua-toi" className="btn btn-outline-dark btn-view rounded-3 fw-bold">Quay lại</Link>
       </div>
 
       {error && <div className="alert alert-danger">{error}</div>}
@@ -128,7 +128,7 @@ const CustomerOrderDetail = () => {
                 <td className="fw-bold">{formatCurrency(item.subTotal)}</td>
                 <td className="text-nowrap">
                   {item.canReview ? (
-                    <button className="btn btn-sm btn-dark" onClick={() => openReview(item)}>
+                    <button className="btn btn-sm btn-dark btn-view rounded-3 fw-bold" onClick={() => openReview(item)}>
                       <i className="bi bi-star me-1" />Đánh giá
                     </button>
                   ) : item.reviewed ? (
@@ -202,8 +202,8 @@ const CustomerOrderDetail = () => {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-outline-secondary" onClick={closeReview}>Đóng</button>
-                  <button type="submit" className="btn btn-dark" disabled={reviewing}>
+                  <button type="button" className="btn btn-outline-dark fw-bold" onClick={closeReview}>Đóng</button>
+                  <button type="submit" className="btn btn-dark btn-view rounded-3 fw-bold" disabled={reviewing}>
                     {reviewing ? 'Đang gửi...' : 'Gửi đánh giá'}
                   </button>
                 </div>
