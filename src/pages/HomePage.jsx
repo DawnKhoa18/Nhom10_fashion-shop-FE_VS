@@ -2,9 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/product/ProductCard';
 import { useHomeData } from '../hooks/useHomeData';
+
 import { getFullImageUrl } from '../services/productService';
 
 const HomePage = () => {
+
     const { hangMoi, hangBanChay, danhSachAo, danhSachQuan, danhSachPhuKien } = useHomeData('#bannerCarousel');
     const listGoiY = [];
 
@@ -18,6 +20,7 @@ const HomePage = () => {
 
     return (
         <div className="homepage-container">
+            {}
             <div id="bannerCarousel" className="carousel slide rounded-5 overflow-hidden shadow-sm" data-bs-ride="true" data-bs-interval="3000">
                 <div className="carousel-indicators">
                     <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" className="active"></button>
@@ -47,6 +50,7 @@ const HomePage = () => {
                 <button className="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next"><span className="carousel-control-next-icon"></span></button>
             </div>
 
+            {}
             <SectionTitle title="HÀNG MỚI" />
             <div className="my-4">
                 <img src={getFullImageUrl('/images/Banners/hang-moi-banner-trang-chu.jpg')} className="w-100 rounded-5 shadow-sm" alt="Banner Hàng Mới" />
@@ -60,6 +64,7 @@ const HomePage = () => {
                 </Link>
             </div>
 
+            {}
             <SectionTitle title="HÀNG BÁN CHẠY" />
             <div className="my-4">
                 <img src={getFullImageUrl('/images/Banners/hang-ban-chay-banner-trang-chu.jpg')} className="w-100 rounded-5 shadow-sm" alt="Banner Bán Chạy" />
@@ -73,6 +78,7 @@ const HomePage = () => {
                 </Link>
             </div>
 
+            {}
             {listGoiY.length > 0 && (
                 <>
                     <SectionTitle title="DÀNH CHO BẠN" />
@@ -85,6 +91,7 @@ const HomePage = () => {
                 </>
             )}
 
+            {}
             <SectionTitle title="ÁO NAM" />
             <div className="my-4">
                 <img src={getFullImageUrl('/images/Banners/ao-banner.jpg')} className="w-100 rounded-5 shadow-sm" alt="Banner Áo" />
@@ -96,6 +103,7 @@ const HomePage = () => {
                 <Link to="/danh-muc/ao" className="btn btn-all fw-bold px-4 py-2 rounded-3">XEM TẤT CẢ <i className="bi bi-chevron-double-right"></i></Link>
             </div>
 
+            {}
             <SectionTitle title="QUẦN NAM" />
             <div className="my-4">
                 <img src={getFullImageUrl('/images/Banners/quan-banner.jpg')} className="w-100 rounded-5 shadow-sm" alt="Banner Quần" />
@@ -107,6 +115,7 @@ const HomePage = () => {
                 <Link to="/danh-muc/quan" className="btn btn-all fw-bold px-4 py-2 rounded-3">XEM TẤT CẢ <i className="bi bi-chevron-double-right"></i></Link>
             </div>
 
+            {}
             <SectionTitle title="PHỤ KIỆN" />
             <div className="my-4">
                 <img src={getFullImageUrl('/images/Banners/phu-kien-banner.jpg')} className="w-100 rounded-5 shadow-sm" alt="Banner Phụ Kiện" />

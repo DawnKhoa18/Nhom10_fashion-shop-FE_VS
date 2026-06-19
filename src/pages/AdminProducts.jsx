@@ -75,7 +75,7 @@ const AdminProducts = () => {
       <h2 className="fw-bold mb-3 text-center">Quản lý sản phẩm</h2>
 
       <div className="text-start mb-4">
-        <Link to="/admin/san-pham/them" className="btn btn-dark btn-view rounded-3 fw-bold">
+        <Link to="/admin/san-pham/them" className="btn btn-success">
           <i className="bi bi-plus-lg"></i> Thêm sản phẩm
         </Link>
       </div>
@@ -141,10 +141,10 @@ const AdminProducts = () => {
                     </td>
                     <td>{formatDate(product.ngayTao)}</td>
                     <td className="text-center">
-                      <Link to={`/admin/san-pham/sua/${product.maSP}`} className="btn btn-sm btn-warning me-1 fw-bold">
+                      <Link to={`/admin/san-pham/sua/${product.maSP}`} className="btn btn-sm btn-warning me-1">
                         Sửa
                       </Link>
-                      <button type="button" className="btn btn-sm btn-danger fw-bold" onClick={() => handleDelete(product)}>
+                      <button type="button" className="btn btn-sm btn-danger" onClick={() => handleDelete(product)}>
                         Xóa
                       </button>
                     </td>

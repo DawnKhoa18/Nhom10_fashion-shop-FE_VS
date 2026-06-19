@@ -71,7 +71,7 @@ function Register() {
         else if (!/^[0-9]{10}$/.test(phone)) newErrors.phone = "Số điện thoại phải đúng 10 chữ số";
         if (!password) newErrors.password = "Vui lòng nhập mật khẩu";
         else if (password.length < 6) newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
-        
+
         if (password !== confirmPassword) newErrors.confirmPassword = "Xác nhận mật khẩu không khớp";
 
         return newErrors;

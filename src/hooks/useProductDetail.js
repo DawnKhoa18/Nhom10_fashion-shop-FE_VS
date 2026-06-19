@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; 
+import { useParams, useNavigate } from 'react-router-dom';
 import { getProductDetail, getSizesByColor } from '../services/productService';
-import { useCart } from '../context/CartContext'; 
+import { useCart } from '../context/CartContext';
 
 const useProductDetail = () => {
     const { id } = useParams();
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const { addToCart } = useCart();
-    
+
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(null);
 
@@ -114,9 +114,9 @@ const useProductDetail = () => {
 
         const success = await addToCart(data.product.id, selectedColor, selectedSize, qty);
         if (success) {
-            showToast("Sản phẩm đã được thêm vào giỏ hàng thành công!");
+            showToast("🎉 Sản phẩm đã được thêm vào giỏ hàng thành công!");
         } else {
-            showToast("Có lỗi xảy ra, vui lòng thử lại!");
+            showToast("❌ Có lỗi xảy ra, vui lòng thử lại!");
         }
     };
 
@@ -144,7 +144,7 @@ const useProductDetail = () => {
         activeTab, setActiveTab, trackRef, offset, allImages,
         handleColorClick, handleQtyChange, decreaseQty, increaseQty,
         prevImage, nextImage, slideRelated, thumbScrollRef,
-        handleAddToCart, handleBuyNow, toastMessage 
+        handleAddToCart, handleBuyNow, toastMessage
     };
 };
 

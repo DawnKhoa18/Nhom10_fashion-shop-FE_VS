@@ -50,8 +50,18 @@ const useCheckout = () => {
     };
 
     useEffect(() => {
+        if (!localStorage.getItem('customerId')) {
+            navigate('/login', {
+                replace: true,
+                state: {
+                    message: 'Vui lòng đăng nhập hoặc đăng ký để xem giỏ hàng và thanh toán.',
+                    returnTo: '/gio-hang'
+                }
+            });
+            return;
+        }
         loadCart();
-    }, []);
+    }, [navigate]);
 
     const loadCart = () => {
         setLoading(true);
@@ -125,7 +135,7 @@ const useCheckout = () => {
                             : x
                     )
                 );
-                refreshCartCount();
+                refreshCartCount(); // Đồng bộ icon sau khi đổi số lượng
             })
             .catch(err => console.error("Lỗi cập nhật số lượng:", err));
     };
@@ -150,7 +160,7 @@ const useCheckout = () => {
                             : x
                     )
                 );
-                refreshCartCount();
+                refreshCartCount(); // Đồng bộ icon sau khi đổi số lượng
             })
             .catch(err => console.error("Lỗi cập nhật trực tiếp số lượng:", err));
     };
@@ -233,7 +243,7 @@ const useCheckout = () => {
                         window.location.assign(res.payUrl);
                         return;
                     }
-                    resetCartCount();
+                    resetCartCount(); // Gọi reset khi thành công
                     navigate('/checkout/success', {
                         replace: true,
                         state: { orderNumber: res.orderNumber, emailSent: res.emailSent }
