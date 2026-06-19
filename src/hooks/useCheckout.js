@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCartData, updateCartQty, removeFromCartApi, submitOrder } from '../services/cartService';
-import { useCart } from '../context/CartContext'; // Đã thêm import
+import { useCart } from '../context/CartContext';
 
 const useCheckout = () => {
     const navigate = useNavigate();
-    const { resetCartCount, refreshCartCount } = useCart(); // Đã thêm lấy hàm từ context
+    const { resetCartCount, refreshCartCount } = useCart();
 
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCategories } from '../../hooks/useCategories';
 import { useCart } from '../../context/CartContext';
+import CustomerChatWidget from '../chat/CustomerChatWidget';
 
 const MainLayout = ({ children, session, menuData }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const { categories, parentCats, loading } = useCategories();
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
@@ -14,6 +16,7 @@ const MainLayout = ({ children, session, menuData }) => {
   const [role, setRole] = useState(localStorage.getItem("role"));
   const [accountType, setAccountType] = useState(localStorage.getItem("accountType"));
   const [searchKeyword, setSearchKeyword] = useState("");
+  const imageSearchInputRef = useRef(null);
   const isEmployee = accountType === "EMPLOYEE";
 
   useEffect(() => {
@@ -43,6 +46,23 @@ const MainLayout = ({ children, session, menuData }) => {
     navigate(`/tim-kiem?keyword=${encodeURIComponent(keyword)}`);
   };
 
+  const handleImageSearch = (event) => {
+    const imageFile = event.target.files?.[0];
+    if (!imageFile) return;
+    event.target.value = '';
+
+    if (location.pathname === '/tim-kiem-hinh-anh') {
+      window.dispatchEvent(new CustomEvent('imageSearchRequested', {
+        detail: { imageFile }
+      }));
+      return;
+    }
+
+    navigate('/tim-kiem-hinh-anh', {
+      state: { imageFile, requestId: Date.now() }
+    });
+  };
+
   return (
     <div className="main-layout">
       <div className="sticky-top" style={{ zIndex: 1050 }}>
@@ -60,11 +80,11 @@ const MainLayout = ({ children, session, menuData }) => {
                   placeholder="Bạn đang tìm gì..."
                   value={searchKeyword}
                   onChange={(event) => setSearchKeyword(event.target.value)}
-                  // Tăng padding bên phải để chữ không trôi ra sau icon xóa
-                  style={{ paddingRight: '50px' }}
+
+                  style={{ paddingRight: '88px' }}
                 />
 
-                {/* Icon xóa nhanh */}
+                {}
                 {searchKeyword && (
                   <button
                     type="button"
@@ -72,7 +92,7 @@ const MainLayout = ({ children, session, menuData }) => {
                     style={{
                       zIndex: 10,
                       top: 0,
-                      right: '45px', // Căn chỉnh vị trí: đẩy sát vào mép trái nút tìm kiếm
+                      right: '45px',
                       height: '100%',
                       background: 'transparent',
                       color: '#6c757d',
@@ -83,6 +103,23 @@ const MainLayout = ({ children, session, menuData }) => {
                     <i className="bi bi-x-lg"></i>
                   </button>
                 )}
+
+                <button
+                  type="button"
+                  className="header-image-search-btn"
+                  onClick={() => imageSearchInputRef.current?.click()}
+                  title="Tìm kiếm bằng hình ảnh"
+                  aria-label="Tìm kiếm bằng hình ảnh"
+                >
+                  <i className="bi bi-camera-fill" />
+                </button>
+                <input
+                  ref={imageSearchInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  hidden
+                  onChange={handleImageSearch}
+                />
 
                 <button className="btn btn-outline-light" type="submit">
                   <i className="bi bi-search"></i>
@@ -361,6 +398,7 @@ const MainLayout = ({ children, session, menuData }) => {
           </div>
         </div>
       </footer>
+      <CustomerChatWidget />
     </div>
   );
 };

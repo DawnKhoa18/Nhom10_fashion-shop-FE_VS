@@ -16,6 +16,7 @@ import AdminProductForm from './pages/AdminProductForm';
 import AdminOrders from './pages/AdminOrders';
 import AdminOrderUpdate from './pages/AdminOrderUpdate';
 import AdminStatistics from './pages/AdminStatistics';
+import AdminChat from './pages/AdminChat';
 import './App.css';
 import './Admin.css';
 import CustomerLogin from "./pages/CustomerLogin";
@@ -23,6 +24,8 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import MomoReturnPage from "./pages/MomoReturnPage";
 import VnpayReturnPage from "./pages/VnpayReturnPage";
+import StorePage from "./pages/StorePage";
+import ImageSearchPage from "./pages/ImageSearchPage";
 
 function AppRoutes() {
   const location = useLocation();
@@ -36,10 +39,12 @@ function AppRoutes() {
       <Route path="/login/customer" element={<CustomerLogin />} />
       <Route path="/login/admin" element={<CustomerLogin />} />
       <Route path="/" element={<HomePage />} />
+      <Route path="/cua-hang" element={<StorePage />} />
       <Route path="/tat-ca" element={<ProductList defaultSlug="tat-ca" />} />
       <Route path="/hang-moi" element={<ProductList defaultSlug="hang-moi" />} />
       <Route path="/hang-ban-chay" element={<ProductList defaultSlug="hang-ban-chay" />} />
       <Route path="/tim-kiem" element={<ProductList defaultSlug="tat-ca" />} />
+      <Route path="/tim-kiem-hinh-anh" element={<ImageSearchPage />} />
       <Route path="/danh-muc/:slug" element={<ProductList />} />
       <Route path="/san-pham/:id" element={<ProductDetail />} />
       <Route path="/checkout" element={<CheckoutPage />} />
@@ -56,6 +61,7 @@ function AppRoutes() {
       <Route path="/admin/don-hang" element={<AdminOrders />} />
       <Route path="/admin/don-hang/cap-nhat/:id" element={<AdminOrderUpdate />} />
       <Route path="/admin/thong-ke" element={<AdminStatistics />} />
+      <Route path="/admin/tro-chuyen" element={<AdminChat />} />
       <Route path="/gio-hang" element={<CheckoutPage />} />
     </Routes>
   );

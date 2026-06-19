@@ -33,7 +33,7 @@ const CheckoutPage = () => {
     return (
         <div className="container my-5">
             <div className="row">
-                {/* Cột trái: Form thông tin giao hàng */}
+                {}
                 <div className="col-lg-6">
                     <h3 className="mb-3 fw-bold">Thông tin đơn hàng</h3>
                     <form onSubmit={handleSubmit}>
@@ -141,7 +141,7 @@ const CheckoutPage = () => {
                     </form>
                 </div>
 
-                {/* Cột phải: Danh sách sản phẩm trong giỏ hàng */}
+                {}
                 <div className="col-lg-6 mt-5 mt-lg-0">
                     <h3 className="mb-3 fw-bold">
                         <i className="bi bi-cart3 me-2"></i> Giỏ hàng
@@ -152,7 +152,7 @@ const CheckoutPage = () => {
                     ) : (
                         <>
                             {cartItems.map((item, index) => {
-                                // Tính toán giá an toàn
+
                                 const gia = Number(item.donGia) || 0;
                                 const soLuong = Number(item.soLuong) || 0;
                                 const thanhTien = Number(item.thanhTien) || (gia * soLuong);

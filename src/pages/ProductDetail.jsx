@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import useProductDetail from '../hooks/useProductDetail';
 import ProductCard from '../components/product/ProductCard';
 import { useCart } from '../context/CartContext';
 import { getProductReviews } from '../services/reviewService';
 
 const ProductDetail = () => {
-    const navigate = useNavigate(); // 2. Khởi tạo hook điều hướng
+    const navigate = useNavigate();
     const {
         loading,
         data,
@@ -65,7 +65,6 @@ const ProductDetail = () => {
         ? reviews.reduce((total, review) => total + Number(review.rating || 0), 0) / reviews.length
         : 0;
 
-    // 3. Hàm xử lý logic nhận tham số chuyển trang
     const handleAddCartClick = async (shouldRedirect = false) => {
         const itemToCart = {
             maSP: product.id,
@@ -81,7 +80,7 @@ const ProductDetail = () => {
 
         if (success) {
             if (shouldRedirect) {
-                navigate('/checkout'); // Chuyển sang trang thanh toán hiện có
+                navigate('/checkout');
             } else {
                 setShowToast(true);
             }
