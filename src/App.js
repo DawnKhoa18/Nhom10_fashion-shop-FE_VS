@@ -22,6 +22,8 @@ import './Admin.css';
 import CustomerLogin from "./pages/CustomerLogin";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
+import MomoReturnPage from "./pages/MomoReturnPage";
+import VnpayReturnPage from "./pages/VnpayReturnPage";
 
 function AppRoutes() {
   const location = useLocation();
@@ -43,6 +45,8 @@ function AppRoutes() {
       <Route path="/san-pham/:id" element={<ProductDetail />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/checkout/success" element={<OrderSuccessPage />} />
+      <Route path="/checkout/momo-return" element={<MomoReturnPage />} />
+      <Route path="/checkout/vnpay-return" element={<VnpayReturnPage />} />
       <Route path="/don-hang-cua-toi" element={<MyOrders />} />
       <Route path="/don-hang-cua-toi/:id" element={<CustomerOrderDetail />} />
       <Route path="/tai-khoan" element={<AccountPage />} />

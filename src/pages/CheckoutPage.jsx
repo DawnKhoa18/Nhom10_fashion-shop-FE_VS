@@ -13,6 +13,10 @@ const CheckoutPage = () => {
         handleQtyChange,
         handleQtyDirectChange,
         handleRemoveItem,
+        itemPendingRemoval,
+        removing,
+        cancelRemoveItem,
+        confirmRemoveItem,
         handleSubmit
     } = useCheckout();
 
@@ -98,7 +102,7 @@ const CheckoutPage = () => {
 
                         <h3 className="mt-4 mb-3 fw-bold">Hình thức thanh toán</h3>
 
-                        <div className="border rounded p-3 mb-2" style={{ cursor: 'pointer' }}>
+                        <div className="border rounded p-3 mb-3" style={{ cursor: 'pointer' }}>
                             <label className="d-flex align-items-start m-0 w-100" style={{ cursor: 'pointer' }}>
                                 <input
                                     type="radio"
@@ -126,23 +130,7 @@ const CheckoutPage = () => {
                                     className="me-3"
                                 />
                                 <div>
-                                    <strong className="d-block">Ví điện tử VNPAY</strong>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div className="border rounded p-3 mb-3" style={{ cursor: 'pointer' }}>
-                            <label className="d-flex align-items-center m-0 w-100" style={{ cursor: 'pointer' }}>
-                                <input
-                                    type="radio"
-                                    name="hinhThucThanhToan"
-                                    value="MOMO"
-                                    checked={formData.hinhThucThanhToan === 'MOMO'}
-                                    onChange={handleInputChange}
-                                    className="me-3"
-                                />
-                                <div>
-                                    <strong className="d-block">Thanh toán MoMo</strong>
+                                    <strong className="d-block">Thanh toán qua VNPay</strong>
                                 </div>
                             </label>
                         </div>
@@ -227,6 +215,47 @@ const CheckoutPage = () => {
                     )}
                 </div>
             </div>
+
+            {itemPendingRemoval && (
+                <div
+                    className="modal fade show d-block"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="removeCartItemTitle"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+                    onMouseDown={(event) => {
+                        if (event.target === event.currentTarget) cancelRemoveItem();
+                    }}
+                >
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content border-0 shadow">
+                            <div className="modal-header">
+                                <h5 className="modal-title fw-bold" id="removeCartItemTitle">
+                                    Xóa sản phẩm khỏi giỏ hàng?
+                                </h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    aria-label="Đóng"
+                                    disabled={removing}
+                                    onClick={cancelRemoveItem}
+                                />
+                            </div>
+                            <div className="modal-body">
+                                Bạn có chắc muốn xóa <strong>{itemPendingRemoval.tenSP}</strong> khỏi giỏ hàng?
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-outline-secondary" disabled={removing} onClick={cancelRemoveItem}>
+                                    Hủy
+                                </button>
+                                <button type="button" className="btn btn-danger" disabled={removing} onClick={confirmRemoveItem}>
+                                    {removing ? 'Đang xóa...' : 'Xóa sản phẩm'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -10,6 +10,8 @@ const useCheckout = () => {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState({});
+    const [itemPendingRemoval, setItemPendingRemoval] = useState(null);
+    const [removing, setRemoving] = useState(false);
 
     const [formData, setFormData] = useState({
         tenKH: '',
@@ -154,17 +156,30 @@ const useCheckout = () => {
     };
 
     const handleRemoveItem = (maSP, mau, size) => {
-        if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) return;
-
         const item = findCartItem(maSP, mau, size);
         if (!item) return;
 
-        removeFromCartApi(item.id)
-            .then(() => {
-                setCartItems(prev => prev.filter(x => x.id !== item.id));
-                refreshCartCount(); // Đồng bộ icon về 0 hoặc giảm số lượng
-            })
-            .catch(err => console.error("Lỗi khi xóa sản phẩm:", err));
+        setItemPendingRemoval(item);
+    };
+
+    const cancelRemoveItem = () => {
+        if (!removing) setItemPendingRemoval(null);
+    };
+
+    const confirmRemoveItem = async () => {
+        if (!itemPendingRemoval || removing) return;
+
+        setRemoving(true);
+        try {
+            await removeFromCartApi(itemPendingRemoval.id);
+            setCartItems(prev => prev.filter(x => x.id !== itemPendingRemoval.id));
+            setItemPendingRemoval(null);
+            await refreshCartCount();
+        } catch (err) {
+            console.error("Lỗi khi xóa sản phẩm:", err);
+        } finally {
+            setRemoving(false);
+        }
     };
 
     const totalPrice = cartItems.reduce(
@@ -210,6 +225,14 @@ const useCheckout = () => {
         submitOrder(orderData)
             .then(res => {
                 if (res.success) {
+                    if (res.paymentMethod === 'MOMO' && res.payUrl) {
+                        window.location.assign(res.payUrl);
+                        return;
+                    }
+                    if (res.paymentMethod === 'VNPAY' && res.payUrl) {
+                        window.location.assign(res.payUrl);
+                        return;
+                    }
                     resetCartCount(); // Gọi reset khi thành công
                     navigate('/checkout/success', {
                         replace: true,
@@ -236,6 +259,10 @@ const useCheckout = () => {
         handleQtyChange,
         handleQtyDirectChange,
         handleRemoveItem,
+        itemPendingRemoval,
+        removing,
+        cancelRemoveItem,
+        confirmRemoveItem,
         handleSubmit
     };
 };
