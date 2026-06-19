@@ -54,7 +54,7 @@ const OrderSuccessPage = () => {
 
                 <button
                     onClick={() => navigate('/')}
-                    className="btn btn-dark w-100 py-2 fw-bold rounded-3 shadow-sm text-uppercase"
+                    className="btn btn-dark w-100 py-2 fw-bold rounded-3 shadow-sm text-uppercase btn-view"
                     style={{ letterSpacing: '1px', fontSize: '15px' }}
                 >
                     <i className="bi bi-house-door me-2"></i> Về trang chủ

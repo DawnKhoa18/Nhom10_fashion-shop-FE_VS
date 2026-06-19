@@ -227,10 +227,10 @@ const AdminProductForm = ({ mode }) => {
           </div>
 
           <div className="text-center">
-            <button type="submit" className={`btn ${isEdit ? 'btn-primary' : 'btn-success'} px-5 fw-bold`} disabled={saving}>
+            <button type="submit" className={`btn ${isEdit ? 'btn-view' : 'btn-view fw-bold'} px-5 fw-bold`} disabled={saving}>
               {saving ? 'Đang lưu...' : isEdit ? 'Cập nhật sản phẩm' : 'Lưu sản phẩm'}
             </button>
-            <Link to="/admin/san-pham" className="btn btn-secondary px-4 fw-bold ms-2">
+            <Link to="/admin/san-pham" className="btn btn-danger px-4 fw-bold ms-2">
               Hủy
             </Link>
           </div>
