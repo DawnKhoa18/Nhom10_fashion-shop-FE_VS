@@ -14,6 +14,8 @@ import AccountPage from './pages/AccountPage';
 import AdminHome from './pages/AdminHome';
 import AdminProducts from './pages/AdminProducts';
 import AdminProductForm from './pages/AdminProductForm';
+import AdminCustomers from './pages/AdminCustomers';
+import AdminCustomerForm from './pages/AdminCustomerForm';
 import AdminOrders from './pages/AdminOrders';
 import AdminOrderUpdate from './pages/AdminOrderUpdate';
 import AdminStatistics from './pages/AdminStatistics';
@@ -54,6 +56,9 @@ function AppRoutes() {
       <Route path="/admin/san-pham" element={<AdminProducts />} />
       <Route path="/admin/san-pham/them" element={<AdminProductForm mode="create" />} />
       <Route path="/admin/san-pham/sua/:id" element={<AdminProductForm mode="edit" />} />
+      <Route path="/admin/khach-hang" element={<AdminCustomers />} />
+      <Route path="/admin/khach-hang/them" element={<AdminCustomerForm mode="create" />} />
+      <Route path="/admin/khach-hang/sua/:id" element={<AdminCustomerForm mode="edit" />} />
       <Route path="/admin/don-hang" element={<AdminOrders />} />
       <Route path="/admin/don-hang/cap-nhat/:id" element={<AdminOrderUpdate />} />
       <Route path="/admin/thong-ke" element={<AdminStatistics />} />

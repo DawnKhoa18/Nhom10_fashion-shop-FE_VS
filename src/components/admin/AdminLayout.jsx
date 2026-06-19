@@ -45,6 +45,13 @@ const AdminLayout = ({ children }) => {
           </li>
 
           <li className="nav-item">
+            <NavLink className={getAdminNavClass} to="/admin/khach-hang">
+              <i className="bi bi-people-fill"></i>
+              <span>Khách Hàng</span>
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
             <NavLink className={getAdminNavClass} to="/admin/don-hang">
               <i className="bi bi-box-seam"></i>
               <span>Đơn Hàng</span>

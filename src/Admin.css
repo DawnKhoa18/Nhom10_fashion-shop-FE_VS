@@ -107,10 +107,16 @@
     background-color: white;
 }
 
+.admin-customers-table {
+    background-color: white;
+}
+
 .admin-products-table th,
 .admin-products-table td,
 .admin-orders-table th,
-.admin-orders-table td {
+.admin-orders-table td,
+.admin-customers-table th,
+.admin-customers-table td {
     vertical-align: middle;
 }
 
@@ -121,6 +127,23 @@
 
 .admin-product-form-card {
     border: 0;
+}
+
+.admin-search-box {
+    position: relative;
+    width: min(100%, 360px);
+}
+
+.admin-search-box i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.admin-search-box .form-control {
+    padding-left: 38px;
 }
 
 .admin-shell .pagination .page-link {
