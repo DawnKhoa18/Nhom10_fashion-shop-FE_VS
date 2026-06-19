@@ -66,6 +66,16 @@ const ProductDetail = () => {
         : 0;
 
     const handleAddCartClick = async (shouldRedirect = false) => {
+        if (!localStorage.getItem('customerId')) {
+            navigate('/login', {
+                state: {
+                    message: 'Vui lòng đăng nhập hoặc đăng ký để mua hàng.',
+                    returnTo: `/san-pham/${product.id}`
+                }
+            });
+            return;
+        }
+
         const itemToCart = {
             maSP: product.id,
             tenSp: product.tenSp,

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { forgotPassword, resetPassword } from '../services/authService';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -11,7 +12,7 @@ const ForgotPassword = () => {
 
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
-    email: '',
+    email: location.state?.email || '',
     otp: '',
     newPassword: '',
     confirmPassword: '',

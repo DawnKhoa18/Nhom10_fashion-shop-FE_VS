@@ -50,8 +50,18 @@ const useCheckout = () => {
     };
 
     useEffect(() => {
+        if (!localStorage.getItem('customerId')) {
+            navigate('/login', {
+                replace: true,
+                state: {
+                    message: 'Vui lòng đăng nhập hoặc đăng ký để xem giỏ hàng và thanh toán.',
+                    returnTo: '/gio-hang'
+                }
+            });
+            return;
+        }
         loadCart();
-    }, []);
+    }, [navigate]);
 
     const loadCart = () => {
         setLoading(true);
