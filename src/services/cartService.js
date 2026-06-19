@@ -51,7 +51,7 @@ export const addToCartApi = async (item) => {
 export const updateCartQty = async (id, quantity) => {
     const response = await axios.post(`${API_CART_URL}/update-qty`, {
         id,
-        quantity
+        soLuong: quantity
     });
 
     return response.data;
@@ -70,5 +70,15 @@ export const removeFromCartApi = async (id) => {
 export const submitOrder = async (orderData) => {
     const response = await axios.post(`${API_ORDER_URL}/place`, orderData);
 
+    return response.data;
+};
+
+export const confirmMomoPayment = async (orderNumber) => {
+    const response = await axios.get(`${API_ORDER_URL}/momo/confirm/${encodeURIComponent(orderNumber)}`);
+    return response.data;
+};
+
+export const confirmVnpayPayment = async (params) => {
+    const response = await axios.get(`${API_ORDER_URL}/vnpay/return`, { params });
     return response.data;
 };
