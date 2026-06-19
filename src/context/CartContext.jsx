@@ -46,7 +46,18 @@ export const CartProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        refreshCartCount();
+        const syncCartCount = () => {
+            refreshCartCount();
+        };
+
+        syncCartCount();
+        window.addEventListener("profileUpdated", syncCartCount);
+        window.addEventListener("storage", syncCartCount);
+
+        return () => {
+            window.removeEventListener("profileUpdated", syncCartCount);
+            window.removeEventListener("storage", syncCartCount);
+        };
     }, []);
 
     const addToCart = async (itemToCart) => {
