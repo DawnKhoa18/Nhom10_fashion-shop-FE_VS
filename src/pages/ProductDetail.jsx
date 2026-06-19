@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
 import useProductDetail from '../hooks/useProductDetail';
 import ProductCard from '../components/product/ProductCard';
 import { useCart } from '../context/CartContext';
+import { getProductReviews } from '../services/reviewService';
 
 const ProductDetail = () => {
     const navigate = useNavigate(); // 2. Khởi tạo hook điều hướng
@@ -33,6 +34,8 @@ const ProductDetail = () => {
 
     const { addToCart } = useCart();
     const [showToast, setShowToast] = useState(false);
+    const [reviews, setReviews] = useState([]);
+    const [reviewsLoading, setReviewsLoading] = useState(false);
 
     useEffect(() => {
         if (showToast) {
@@ -43,10 +46,24 @@ const ProductDetail = () => {
         }
     }, [showToast]);
 
+    useEffect(() => {
+        const productId = data?.product?.id;
+        if (!productId) return;
+
+        setReviewsLoading(true);
+        getProductReviews(productId)
+            .then((result) => setReviews(result || []))
+            .catch(() => setReviews([]))
+            .finally(() => setReviewsLoading(false));
+    }, [data?.product?.id]);
+
     if (loading) return <div className="container my-5 text-center"><h3>Đang tải dữ liệu...</h3></div>;
     if (!data || !data.product) return <div className="container my-5 text-center"><h3>Không tìm thấy sản phẩm!</h3></div>;
 
     const { product, isCoSize, listMauSac, listSPTuongTu } = data;
+    const averageRating = reviews.length
+        ? reviews.reduce((total, review) => total + Number(review.rating || 0), 0) / reviews.length
+        : 0;
 
     // 3. Hàm xử lý logic nhận tham số chuyển trang
     const handleAddCartClick = async (shouldRedirect = false) => {
@@ -191,6 +208,56 @@ const ProductDetail = () => {
                 {activeTab === "ship" && <img src={`http://localhost:8080/Images/ChinhSach_GiaoHang_DoiHang/chinh-sach-giao-hang.jpg`} className="img-fluid rounded w-100" alt="Shipping" style={{ display: 'block', height: 'auto' }} />}
                 {activeTab === "return" && <img src={`http://localhost:8080/Images/ChinhSach_GiaoHang_DoiHang/chinh-sach-doi-hang.jpg`} className="img-fluid rounded w-100" alt="Return" style={{ display: 'block', height: 'auto' }} />}
             </div>
+
+            <section className="card border-0 shadow-sm rounded-4 p-4 mt-5">
+                <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                    <div>
+                        <h3 className="fw-bold mb-1">Đánh giá sản phẩm</h3>
+                        <p className="text-muted mb-0">Đánh giá từ khách hàng đã mua và nhận sản phẩm.</p>
+                    </div>
+                    {reviews.length > 0 && (
+                        <div className="text-end">
+                            <div className="fs-3 fw-bold">{averageRating.toFixed(1)}/5</div>
+                            <div className="text-warning">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <i key={star} className={`bi ${star <= Math.round(averageRating) ? 'bi-star-fill' : 'bi-star'}`} />
+                                ))}
+                                <span className="text-muted small ms-2">({reviews.length} đánh giá)</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {reviewsLoading ? (
+                    <div className="text-center py-4"><div className="spinner-border spinner-border-sm" /></div>
+                ) : reviews.length === 0 ? (
+                    <div className="text-center text-muted border rounded-3 py-4">
+                        Sản phẩm chưa có đánh giá. Khách đã nhận hàng có thể đánh giá trong mục Đơn hàng của tôi.
+                    </div>
+                ) : (
+                    <div className="d-grid gap-3">
+                        {reviews.map((review) => (
+                            <article key={review.id} className="border rounded-3 p-3">
+                                <div className="d-flex justify-content-between gap-3">
+                                    <div>
+                                        <div className="fw-bold">{review.customerName || 'Khách hàng'}</div>
+                                        <div className="text-warning my-1">
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <i key={star} className={`bi ${star <= review.rating ? 'bi-star-fill' : 'bi-star'}`} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <small className="text-muted">
+                                        {review.createdAt ? new Date(review.createdAt).toLocaleDateString('vi-VN') : ''}
+                                    </small>
+                                </div>
+                                {review.title && <div className="fw-semibold mt-2">{review.title}</div>}
+                                <p className="mb-0 mt-1">{review.content}</p>
+                            </article>
+                        ))}
+                    </div>
+                )}
+            </section>
 
             <div className="d-flex align-items-center justify-content-center my-4 new-title">
                 <div className="line-gradient"></div>

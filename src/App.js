@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
 import MainLayout from './components/layout/MainLayout';
 import AdminLayout from './components/admin/AdminLayout';
 import HomePage from './pages/HomePage';
@@ -76,9 +75,7 @@ function AppRoutes() {
 function App() {
   return (
     <Router>
-      <CartProvider>
-        <AppRoutes />
-      </CartProvider>
+      <AppRoutes />
     </Router>
   );
 }
