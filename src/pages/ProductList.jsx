@@ -5,8 +5,8 @@ import ProductCard from '../components/product/ProductCard';
 
 const ProductList = ({ defaultSlug }) => {
   // Lấy slug từ URL (ví dụ: /danh-muc/ao-thun)
-  const { slug } = useParams(); 
-  
+  const { slug } = useParams();
+
   // Ưu tiên dùng slug từ URL, nếu không có thì dùng defaultSlug
   const activeSlug = slug || defaultSlug;
 
@@ -28,25 +28,30 @@ const ProductList = ({ defaultSlug }) => {
       {/* 1. Hiển thị Banner động */}
       {banner && (
         <div className="mb-4">
-          <img 
-            src={`${API_BASE_URL}${banner}`} 
-            className="w-100 rounded-5" 
-            style={{ objectFit: 'cover' }} 
-            alt="Banner danh mục" 
+          <img
+            src={`${API_BASE_URL}${banner}`}
+            className="w-100 rounded-5"
+            style={{ objectFit: 'cover' }}
+            alt="Banner danh mục"
           />
         </div>
       )}
 
       {/* 2. Thanh Bộ Lọc Sắp Xếp */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
-        <div>
-          <h3 className="fw-bold mb-1">{pageTitle}</h3>
-          {keyword && (
-            <p className="text-muted mb-0">
-              Từ khóa: <span className="fw-semibold">"{keyword}"</span>
-            </p>
-          )}
+      <div className="d-flex flex-column align-items-center mb-4">
+        {/* Phần tiêu đề với đường gạch 2 bên */}
+        <div className="d-flex align-items-center justify-content-center w-100">
+          <div className="line-gradient"></div>
+          <h3 className="mx-3 fw-bold text-uppercase mb-0 text-nowrap">{pageTitle}</h3>
+          <div className="line-gradient" style={{ transform: 'rotate(180deg)' }}></div>
         </div>
+
+        {/* Phần từ khóa hiển thị dưới tiêu đề nếu có */}
+        {keyword && (
+          <p className="text-muted mt-2 mb-0">
+            Từ khóa: <span className="fw-semibold">"{keyword}"</span>
+          </p>
+        )}
       </div>
 
       <div className="d-flex justify-content-end mb-3">
@@ -54,8 +59,8 @@ const ProductList = ({ defaultSlug }) => {
           <label htmlFor="sortOption" className="fw-bold">Bộ lọc:</label>
         </div>
 
-        <select 
-          id="sortOption" 
+        <select
+          id="sortOption"
           className="form-select form-select-sm w-auto border-2 border-dark rounded-3"
           value={currentSort}
           onChange={handleSortChange}
@@ -89,7 +94,7 @@ const ProductList = ({ defaultSlug }) => {
 
       {hienXemThem && (
         <div className="text-center mt-4">
-          <button 
+          <button
             className="btn btn-load-more fw-bold px-4 rounded-3"
             onClick={handleLoadMore}
           >

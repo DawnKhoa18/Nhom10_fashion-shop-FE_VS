@@ -53,14 +53,37 @@ const MainLayout = ({ children, session, menuData }) => {
             </Link>
 
             <form className="header-search d-none d-lg-flex flex-grow-1 mx-4" style={{ maxWidth: '600px' }} onSubmit={handleSearchSubmit}>
-              <div className="input-group">
+              <div className="input-group position-relative">
                 <input
                   type="text"
                   className="form-control"
                   placeholder="Bạn đang tìm gì..."
                   value={searchKeyword}
                   onChange={(event) => setSearchKeyword(event.target.value)}
+                  // Tăng padding bên phải để chữ không trôi ra sau icon xóa
+                  style={{ paddingRight: '50px' }}
                 />
+
+                {/* Icon xóa nhanh */}
+                {searchKeyword && (
+                  <button
+                    type="button"
+                    className="btn position-absolute border-0"
+                    style={{
+                      zIndex: 10,
+                      top: 0,
+                      right: '45px', // Căn chỉnh vị trí: đẩy sát vào mép trái nút tìm kiếm
+                      height: '100%',
+                      background: 'transparent',
+                      color: '#6c757d',
+                      padding: '0 10px'
+                    }}
+                    onClick={() => setSearchKeyword("")}
+                  >
+                    <i className="bi bi-x-lg"></i>
+                  </button>
+                )}
+
                 <button className="btn btn-outline-light" type="submit">
                   <i className="bi bi-search"></i>
                 </button>

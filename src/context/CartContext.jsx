@@ -41,6 +41,10 @@ export const CartProvider = ({ children }) => {
         }
     };
 
+    const resetCartCount = () => {
+        setCartCount(0);
+    };
+
     useEffect(() => {
         refreshCartCount();
     }, []);
@@ -61,7 +65,8 @@ export const CartProvider = ({ children }) => {
             value={{
                 cartCount,
                 addToCart,
-                refreshCartCount
+                refreshCartCount,
+                resetCartCount
             }}
         >
             {children}

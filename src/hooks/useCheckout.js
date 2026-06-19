@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCartData, updateCartQty, removeFromCartApi, submitOrder } from '../services/cartService';
+import { useCart } from '../context/CartContext'; // Đã thêm import
 
 const useCheckout = () => {
     const navigate = useNavigate();
+    const { resetCartCount, refreshCartCount } = useCart(); // Đã thêm lấy hàm từ context
 
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -121,6 +123,7 @@ const useCheckout = () => {
                             : x
                     )
                 );
+                refreshCartCount(); // Đồng bộ icon sau khi đổi số lượng
             })
             .catch(err => console.error("Lỗi cập nhật số lượng:", err));
     };
@@ -145,6 +148,7 @@ const useCheckout = () => {
                             : x
                     )
                 );
+                refreshCartCount(); // Đồng bộ icon sau khi đổi số lượng
             })
             .catch(err => console.error("Lỗi cập nhật trực tiếp số lượng:", err));
     };
@@ -158,6 +162,7 @@ const useCheckout = () => {
         removeFromCartApi(item.id)
             .then(() => {
                 setCartItems(prev => prev.filter(x => x.id !== item.id));
+                refreshCartCount(); // Đồng bộ icon về 0 hoặc giảm số lượng
             })
             .catch(err => console.error("Lỗi khi xóa sản phẩm:", err));
     };
@@ -169,10 +174,6 @@ const useCheckout = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Đã chạy handleSubmit");
-        console.log("customerId:", localStorage.getItem("customerId"));
-        console.log("cartItems:", cartItems);
-
 
         const tenKH = formData.tenKH.trim();
         const phone = formData.phone.trim();
@@ -190,7 +191,6 @@ const useCheckout = () => {
         }
 
         if (Object.values(newErrors).some(Boolean)) {
-            console.log("Lỗi validate:", newErrors);
             setErrors(newErrors);
             return;
         }
@@ -207,11 +207,10 @@ const useCheckout = () => {
             items: cartItems
         };
 
-        console.log("Dữ liệu gửi đặt hàng:", orderData);
-
         submitOrder(orderData)
             .then(res => {
                 if (res.success) {
+                    resetCartCount(); // Gọi reset khi thành công
                     navigate('/checkout/success', {
                         replace: true,
                         state: { orderNumber: res.orderNumber, emailSent: res.emailSent }

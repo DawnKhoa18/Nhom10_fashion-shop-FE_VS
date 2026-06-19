@@ -1,10 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginCustomer, loginWithGoogle } from '../services/authService';
 import GoogleSignInButton from '../components/auth/GoogleSignInButton';
 
 const CustomerLogin = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -75,7 +80,6 @@ const CustomerLogin = () => {
     <div className="container d-flex justify-content-center align-items-center py-5" style={{ minHeight: 'calc(100vh - 250px)' }}>
       <div className="card border-0 shadow p-4 rounded-4" style={{ width: '100%', maxWidth: 420 }}>
         <h3 className="text-center fw-bold mb-2" style={{ color: '#f59e0b' }}>Đăng nhập</h3>
-        <p className="text-center text-muted mb-4">Dành cho khách hàng và nhân viên</p>
 
         {errors.general && <div className="alert alert-danger py-2">{errors.general}</div>}
         {success && <div className="alert alert-success py-2">{success}</div>}
@@ -111,7 +115,7 @@ const CustomerLogin = () => {
               />
               <button
                 type="button"
-                className="btn btn-outline-secondary"
+                className="btn btn-outline-dark"
                 onClick={() => setShowPassword((value) => !value)}
                 aria-label="Hiện hoặc ẩn mật khẩu"
               >
@@ -121,7 +125,7 @@ const CustomerLogin = () => {
             </div>
           </div>
 
-          <button type="submit" className="btn btn-dark w-100 fw-bold py-2" disabled={submitting || !!success}>
+          <button type="submit" className="btn btn-dark w-100 fw-bold py-2 btn-view rounded-3" disabled={submitting || !!success}>
             {submitting ? 'Đang đăng nhập...' : 'ĐĂNG NHẬP'}
           </button>
         </form>

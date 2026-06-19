@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginWithGoogle, register } from "../services/authService";
 import GoogleSignInButton from "../components/auth/GoogleSignInButton";
@@ -6,11 +6,16 @@ import GoogleSignInButton from "../components/auth/GoogleSignInButton";
 function Register() {
     const navigate = useNavigate();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
         phone: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     });
 
     const [errors, setErrors] = useState({});
@@ -56,7 +61,7 @@ function Register() {
     };
 
     const validate = () => {
-        const { fullName, email, phone, password } = formData;
+        const { fullName, email, phone, password, confirmPassword } = formData;
         const newErrors = {};
 
         if (!fullName.trim()) newErrors.fullName = "Vui lòng nhập họ tên";
@@ -66,6 +71,8 @@ function Register() {
         else if (!/^[0-9]{10}$/.test(phone)) newErrors.phone = "Số điện thoại phải đúng 10 chữ số";
         if (!password) newErrors.password = "Vui lòng nhập mật khẩu";
         else if (password.length < 6) newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+        
+        if (password !== confirmPassword) newErrors.confirmPassword = "Xác nhận mật khẩu không khớp";
 
         return newErrors;
     };
@@ -83,7 +90,8 @@ function Register() {
         setErrors({});
         setSuccess("");
         try {
-            await register(formData);
+            const { confirmPassword, ...dataToSubmit } = formData;
+            await register(dataToSubmit);
             setSuccess("Đăng ký thành công! Đang chuyển sang trang đăng nhập...");
             setTimeout(() => navigate("/login", { replace: true }), 900);
         } catch (error) {
@@ -152,7 +160,7 @@ function Register() {
                         {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-3">
                         <label className="form-label fw-semibold">Mật khẩu</label>
                         <input
                             type="password"
@@ -165,7 +173,20 @@ function Register() {
                         {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                     </div>
 
-                    <button type="submit" className="btn btn-dark w-100 fw-bold py-2" disabled={submitting || !!success}>
+                    <div className="mb-4">
+                        <label className="form-label fw-semibold">Xác nhận mật khẩu</label>
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`}
+                            placeholder="Nhập lại mật khẩu"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                        />
+                        {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
+                    </div>
+
+                    <button type="submit" className="btn btn-dark w-100 fw-bold py-2 btn-view rounded-3" disabled={submitting || !!success}>
                         {submitting ? "Đang đăng ký..." : "ĐĂNG KÝ"}
                     </button>
                 </form>

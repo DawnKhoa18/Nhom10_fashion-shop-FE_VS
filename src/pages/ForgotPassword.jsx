@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { forgotPassword, resetPassword } from '../services/authService';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     email: '',
@@ -67,8 +72,15 @@ const ForgotPassword = () => {
         newPassword: form.newPassword,
         confirmPassword: form.confirmPassword,
       });
-      alert(response.data);
-      navigate('/login');
+      
+      // Hiển thị thông báo thành công thông qua state message
+      setMessage(response.data);
+      
+      // Chờ 2 giây để người dùng đọc thông báo rồi mới chuyển trang
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+      
     } catch (err) {
       setError(err.response?.data || 'Đổi mật khẩu thất bại');
     } finally {
@@ -81,7 +93,7 @@ const ForgotPassword = () => {
       <div className="card border-0 shadow p-4 rounded-4" style={{ width: '100%', maxWidth: 460 }}>
         <h3 className="text-center fw-bold mb-2" style={{ color: '#f59e0b' }}>Quên mật khẩu</h3>
         <p className="text-center text-muted mb-4">
-          Nhập email tài khoản khách hàng để nhận mã OTP đặt lại mật khẩu.
+          Nhập email tài khoản để nhận mã OTP đặt lại mật khẩu.
         </p>
 
         {error && <div className="alert alert-danger py-2">{error}</div>}
@@ -100,7 +112,7 @@ const ForgotPassword = () => {
                 onChange={updateForm}
               />
             </div>
-            <button type="submit" className="btn btn-dark w-100 fw-bold py-2" disabled={submitting}>
+            <button type="submit" className="btn btn-dark w-100 fw-bold py-2 btn-view rounded-3" disabled={submitting}>
               {submitting ? 'Đang gửi...' : 'Gửi mã OTP'}
             </button>
           </form>
@@ -142,7 +154,7 @@ const ForgotPassword = () => {
                 onChange={updateForm}
               />
             </div>
-            <button type="submit" className="btn btn-dark w-100 fw-bold py-2" disabled={submitting}>
+            <button type="submit" className="btn btn-dark w-100 fw-bold py-2 btn-view rounded-3" disabled={submitting}>
               {submitting ? 'Đang đổi...' : 'Đổi mật khẩu'}
             </button>
             <button
