@@ -1,10 +1,11 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loginCustomer, loginWithGoogle } from '../services/authService';
 import GoogleSignInButton from '../components/auth/GoogleSignInButton';
 
 const CustomerLogin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,13 +31,15 @@ const CustomerLogin = () => {
     localStorage.setItem('accountType', data.accountType);
     window.dispatchEvent(new Event('profileUpdated'));
 
-    const targetPath = data.accountType === 'EMPLOYEE' ? '/admin' : '/';
+    const targetPath = data.accountType === 'EMPLOYEE'
+      ? '/admin'
+      : (location.state?.returnTo || '/');
     setSuccess(data.accountType === 'EMPLOYEE'
       ? 'Đăng nhập thành công! Đang chuyển đến trang quản trị...'
       : 'Đăng nhập thành công! Đang chuyển về trang chủ...');
 
     setTimeout(() => navigate(targetPath, { replace: true }), 700);
-  }, [navigate]);
+  }, [location.state?.returnTo, navigate]);
 
   const handleGoogleSuccess = useCallback(async (credential) => {
     setSubmitting(true);
@@ -81,6 +84,7 @@ const CustomerLogin = () => {
       <div className="card border-0 shadow p-4 rounded-4" style={{ width: '100%', maxWidth: 420 }}>
         <h3 className="text-center fw-bold mb-2" style={{ color: '#f59e0b' }}>Đăng nhập</h3>
 
+        {location.state?.message && <div className="alert alert-warning py-2">{location.state.message}</div>}
         {errors.general && <div className="alert alert-danger py-2">{errors.general}</div>}
         {success && <div className="alert alert-success py-2">{success}</div>}
 

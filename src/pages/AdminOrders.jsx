@@ -59,7 +59,7 @@ const AdminOrders = () => {
 
   return (
     <div className="p-4">
-      <h2 className="mb-3 text-center fw-bold">Quản lý đơn hàng</h2>
+      <h2 className="mb-3">Quản lý đơn hàng</h2>
 
       {loading && (
         <div className="text-center py-5">
@@ -96,7 +96,7 @@ const AdminOrders = () => {
                     <td><StatusBadge status={order.trangThai} /></td>
                     <td>
                       {order.trangThai !== 'Đã hủy' ? (
-                        <Link to={`/admin/don-hang/cap-nhat/${order.maDH}`} className="btn btn-sm btn-primary fw-bold">
+                        <Link to={`/admin/don-hang/cap-nhat/${order.maDH}`} className="btn btn-sm btn-primary">
                           Cập nhật
                         </Link>
                       ) : (

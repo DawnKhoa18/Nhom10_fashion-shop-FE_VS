@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; 
+const BASE_URL = 'http://localhost:8080';
 const API_BASE_URL = `${BASE_URL}/api/SanPham`;
 
 export const getFullImageUrl = (path) => {
@@ -11,11 +11,12 @@ export const getFullImageUrl = (path) => {
 
 export const getHomeProducts = async () => {
     try {
+
         const endpoints = [
-            'GetHangMoi', 
-            'GetHangBanChay', 
-            'GetDanhSachAo', 
-            'GetDanhSachQuan', 
+            'GetHangMoi',
+            'GetHangBanChay',
+            'GetDanhSachAo',
+            'GetDanhSachQuan',
             'GetDanhSachPhuKien'
         ];
 

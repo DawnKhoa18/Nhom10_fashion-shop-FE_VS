@@ -78,10 +78,17 @@ const AccountPage = () => {
             ) : (
               <form onSubmit={changePassword} style={{ maxWidth: 550 }}>
                 <h3 className="fw-bold mb-4">Đổi mật khẩu</h3>
+                <div className="alert alert-info">
+                  Nếu bạn đăng nhập bằng Google hoặc không nhớ mật khẩu hiện tại, hãy{' '}
+                  <Link to="/quen-mat-khau" state={{ email: profile.email }} className="fw-bold">
+                    xác nhận Gmail bằng mã OTP
+                  </Link>{' '}
+                  để tạo mật khẩu mới.
+                </div>
                 <div className="mb-3"><label className="form-label fw-semibold">Mật khẩu hiện tại</label><input type="password" className="form-control" value={passwords.currentPassword} onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} required /></div>
                 <div className="mb-3"><label className="form-label fw-semibold">Mật khẩu mới</label><input type="password" className="form-control" minLength="6" value={passwords.newPassword} onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} required /></div>
                 <div className="mb-3"><label className="form-label fw-semibold">Xác nhận mật khẩu mới</label><input type="password" className="form-control" minLength="6" value={passwords.confirmPassword} onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })} required /></div>
-                <button className="btn btn-dark px-4 btn-view rounded-3 fw-bold" disabled={saving}>{saving ? 'Đang xử lý...' : 'Đổi mật khẩu'}</button>
+                <button className="btn btn-dark px-4" disabled={saving}>{saving ? 'Đang xử lý...' : 'Đổi mật khẩu'}</button>
               </form>
             )}
           </div>

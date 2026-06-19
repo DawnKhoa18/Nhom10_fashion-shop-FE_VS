@@ -34,6 +34,7 @@ export const useHomeData = (carouselId) => {
             if (bootstrap && carouselId) {
                 const element = document.querySelector(carouselId);
                 if (element) {
+
                     carouselInstance = new bootstrap.Carousel(element, {
                         interval: 3000,
                         ride: 'carousel',
@@ -47,7 +48,7 @@ export const useHomeData = (carouselId) => {
 
         return () => {
             isMounted = false;
-            clearTimeout(timer); 
+            clearTimeout(timer);
             if (carouselInstance) {
                 carouselInstance.dispose();
             }

@@ -3,18 +3,19 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 const useProductList = (defaultSlug) => {
-  const { slug } = useParams(); 
+
+  const { slug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   const [products, setProducts] = useState([]);
   const [pageTitle, setPageTitle] = useState('Đang tải...');
   const [banner, setBanner] = useState('');
-  const [take, setTake] = useState(30); 
+  const [take, setTake] = useState(30);
   const [hienXemThem, setHienXemThem] = useState(false);
 
   const currentSort = searchParams.get('sort') || 'default';
   const keyword = searchParams.get('keyword') || '';
-  
+
   const activeSlug = slug || defaultSlug || 'tat-ca';
   const API_BASE_URL = "http://localhost:8080";
 
@@ -23,7 +24,7 @@ const useProductList = (defaultSlug) => {
       top: 0,
       behavior: 'smooth'
     });
-  }, [activeSlug, currentSort, keyword]); 
+  }, [activeSlug, currentSort, keyword]);
 
   useEffect(() => {
     axios.get(`${API_BASE_URL}/api/SanPham/danh-sach`, {
@@ -38,7 +39,7 @@ const useProductList = (defaultSlug) => {
       setProducts(res.data.products);
       setPageTitle(res.data.titlePage);
       setBanner(res.data.banner);
-      setHienXemThem(res.data.hienXemThem); 
+      setHienXemThem(res.data.hienXemThem);
     })
     .catch(err => console.error("Lỗi lấy danh sách sản phẩm: ", err));
   }, [activeSlug, currentSort, keyword, take]);

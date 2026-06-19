@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import useProductDetail from '../hooks/useProductDetail';
 import ProductCard from '../components/product/ProductCard';
 import { useCart } from '../context/CartContext';
 import { getProductReviews } from '../services/reviewService';
 
 const ProductDetail = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const {
         loading,
         data,
@@ -66,6 +66,16 @@ const ProductDetail = () => {
         : 0;
 
     const handleAddCartClick = async (shouldRedirect = false) => {
+        if (!localStorage.getItem('customerId')) {
+            navigate('/login', {
+                state: {
+                    message: 'Vui lòng đăng nhập hoặc đăng ký để mua hàng.',
+                    returnTo: `/san-pham/${product.id}`
+                }
+            });
+            return;
+        }
+
         const itemToCart = {
             maSP: product.id,
             tenSp: product.tenSp,
